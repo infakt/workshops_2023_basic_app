@@ -11,6 +11,7 @@ module Workshops2023BasicApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    config.time_zone = 'Warsaw'
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -18,5 +19,10 @@ module Workshops2023BasicApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # for notification testing purposes
+    # Sidekiq::Cron::Job.create(name: 'Due date notification', cron: '*/5 * * * *', class: 'DueDateNotificationsJob')
+
+    Sidekiq::Cron::Job.create(name: 'Due date notification', cron: '0 8 * * *', class: 'DueDateNotificationsJob')
   end
 end
