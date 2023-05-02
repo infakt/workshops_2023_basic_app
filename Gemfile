@@ -50,6 +50,9 @@ gem 'sassc-rails'
 # gem "image_processing", "~> 1.2"
 
 gem 'devise'
+gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
+gem 'a9n'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
