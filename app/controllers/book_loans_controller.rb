@@ -1,6 +1,7 @@
 class BookLoansController < ApplicationController
   before_action :set_book_loan, only: %i[cancel]
   before_action :prepare_book_loan, only: %i[create]
+  before_action :load_google_calendar_client, only: %i[create]
 
   def create
     respond_to do |format|
@@ -12,6 +13,8 @@ class BookLoansController < ApplicationController
         format.json { render json: @book_loan.errors, status: :unprocessable_entity }
       end
     end
+    
+    notice_calendar(current_user)
   end
 
   def cancel
@@ -37,5 +40,13 @@ class BookLoansController < ApplicationController
 
   def book_loan_params
     params.require(:book_id)
+  end
+
+  def notice_calendar(current_user)
+    UserCalendarNotifier.new.add_event_to_calendar(current_user)
+  end
+
+  def load_google_calendar_client
+    @load_google_calendar_client = UserCalendarNotifier.new.get_google_calendar_client(current_user)
   end
 end
