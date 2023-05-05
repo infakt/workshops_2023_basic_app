@@ -9,14 +9,14 @@ class User < ApplicationRecord
   has_many :book_reservations, dependent: :destroy
 
   def self.from_omniauth(access_token)
-    User.where(provider: access_token.provider, email:
-      access_token.info.email).first_or_create do |user|
+    find_or_create_by(provider: access_token.provider, email:
+      access_token.info.email) do |user|
       user.provider = access_token.provider
       user.email = access_token.info.email
       user.password = Devise.friendly_token[0, 20]
       user.token = access_token.credentials.token
       user.refresh_token = access_token.credentials.refresh_token
-      user.save
+      user.save!
     end
   end
 end

@@ -2,18 +2,16 @@ require 'google/apis/calendar_v3'
 require 'google/api_client/client_secrets'
 
 class UserCalendarNotifier
-  include ActiveSupport::Concern
-
   CALENDAR_ID = 'primary'.freeze
 
-  def get_google_calendar_client(current_user)
+  def get_google_calendar_client(user)
     client = Google::Apis::CalendarV3::CalendarService.new
-    return unless current_user.present? && current_user.token.present? && current_user.refresh_token.present?
+    return unless user.present? && user.token.present? && user.refresh_token.present?
 
     secrets = Google::APIClient::ClientSecrets.new({
                                                      'web' => {
-                                                       'access_token' => current_user.token,
-                                                       'refresh_token' => current_user.refresh_token,
+                                                       'access_token' => user.token,
+                                                       'refresh_token' => user.refresh_token,
                                                        'client_id' => A9n.google_client_id,
                                                        'client_secret' => A9n.google_client_secret
                                                      }
@@ -45,8 +43,8 @@ class UserCalendarNotifier
     Time.zone.now + 14.days
   end
 
-  def insert_event(current_user, book)
-    client = get_google_calendar_client(current_user)
+  def insert_event(user, book)
+    client = get_google_calendar_client(user)
     client.insert_event(CALENDAR_ID, get_event(book))
   end
 end
