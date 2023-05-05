@@ -26,8 +26,8 @@ class UserCalendarNotifier
     client
   end
 
-  def add_event_to_calendar(current_user)
+  def get_calendar_list(current_user)
     client = get_google_calendar_client(current_user)
-    client.quick_add_event('reader_reminder', 'testowe wydarzenie')
+    client.list_calendar_lists(max_results: 10)
   end
 end

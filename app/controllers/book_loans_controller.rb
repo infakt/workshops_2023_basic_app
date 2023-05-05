@@ -43,7 +43,7 @@ class BookLoansController < ApplicationController
   end
 
   def notice_calendar(current_user)
-    UserCalendarNotifier.new.add_event_to_calendar(current_user)
+    UserCalendarNotifier.new.get_calendar_list(current_user)
   end
 
   def load_google_calendar_client
