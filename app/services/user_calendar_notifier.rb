@@ -4,6 +4,8 @@ require 'google/api_client/client_secrets.rb'
 class UserCalendarNotifier
   include ActiveSupport::Concern
 
+  CALENDAR_ID = 'primary'
+
   def get_google_calendar_client(current_user)
     client = Google::Apis::CalendarV3::CalendarService.new
     return unless (current_user.present? && current_user.token.present? && current_user.refresh_token.present?)
@@ -26,8 +28,25 @@ class UserCalendarNotifier
     client
   end
 
-  def get_calendar_list(current_user)
+  def get_event(book)
+    {
+      summary: 'Oddać książkę: ' + book.title,
+      description: 'Mija termin oddania książki: ' + book.title,
+      start: {
+        date_time: two_week_from_now.to_datetime.to_s
+      },
+      end: {
+        date_time: (two_week_from_now + 1.hour).to_datetime.to_s
+      }
+    }
+  end
+
+  def two_week_from_now
+    Time.now + 14.days
+  end
+
+  def insert_event(current_user, book)
     client = get_google_calendar_client(current_user)
-    client.list_calendar_lists(max_results: 10)
+    client.insert_event(CALENDAR_ID, get_event(book))
   end
 end
