@@ -1,37 +1,39 @@
 require 'google/apis/calendar_v3'
-require 'google/api_client/client_secrets.rb'
+require 'google/api_client/client_secrets'
 
 class UserCalendarNotifier
   include ActiveSupport::Concern
 
-  CALENDAR_ID = 'primary'
+  CALENDAR_ID = 'primary'.freeze
 
   def get_google_calendar_client(current_user)
     client = Google::Apis::CalendarV3::CalendarService.new
-    return unless (current_user.present? && current_user.token.present? && current_user.refresh_token.present?)
+    return unless current_user.present? && current_user.token.present? && current_user.refresh_token.present?
 
-    secrets = Google::APIClient::ClientSecrets.new({
-      "web" => {
-        "access_token" => current_user.token,
-        "refresh_token" => current_user.refresh_token,
-        "client_id" => A9n.google_client_id,
-        "client_secret" => A9n.google_client_secret
-      }
-    })
     begin
       client.authorization = secrets.to_authorization
-      client.authorization.grant_type = "refresh_token"
-
-    rescue => e
-      puts e.message
+      client.authorization.grant_type = 'refresh_token'
+    rescue StandardError => e
+      Rails.logger.debug e.message
     end
     client
   end
 
+  def secrets
+    @secrets ||= Google::APIClient::ClientSecrets.new({
+                                                        'web' => {
+                                                          'access_token' => current_user.token,
+                                                          'refresh_token' => current_user.refresh_token,
+                                                          'client_id' => A9n.google_client_id,
+                                                          'client_secret' => A9n.google_client_secret
+                                                        }
+                                                      })
+  end
+
   def get_event(book)
     {
-      summary: 'Oddać książkę: ' + book.title,
-      description: 'Mija termin oddania książki: ' + book.title,
+      summary: "Oddać książkę: #{book.title}",
+      description: "Mija termin oddania książki: #{book.title}",
       start: {
         date_time: two_week_from_now.to_datetime.to_s
       },
@@ -42,7 +44,7 @@ class UserCalendarNotifier
   end
 
   def two_week_from_now
-    Time.now + 14.days
+    Time.zone.now + 14.days
   end
 
   def insert_event(current_user, book)
