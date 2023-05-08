@@ -2,13 +2,13 @@
 
 ## Cel zadania
 
-Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta Google Gmail oraz aby w kalendarzu Google tego użytkownika pojawiało się wydarzenie przypominające o teerminie oddania książki wypożyczonej w naszej aplikacji.
+Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta Google Gmail oraz aby w kalendarzu Google tego użytkownika pojawiało się wydarzenie przypominające o terminie oddania książki wypożyczonej w naszej aplikacji.
 
 ## Dwa etapy zadania
 
 1. Umożliwienie logowania się w aplikacja za pomocą konta Google.
 2. Utworzenie eventu w kalendarzu Google zalogowanego użytkownika:
- - event pojawia się w kalendarzu tu po akcji wypożyczenia książki,
+ - event pojawia się w kalendarzu tuż po akcji wypożyczenia książki,
  - event widoczny jest w kalendarzu w dacie sugerowanego terminu oddania książki, umownie ustalamy to na dwa tygodnie od daty wypożyczenia.
 
 ## Działamy!
@@ -16,15 +16,15 @@ Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta
 ## Etap 1 - pozyskanie klucza API
 
 1. Najpierw pozyskamy credentiale dla klienta OAuth, bo aktywowane są po około 5 minutach więc aby nie czekać potem to najpierw uzyskamy je a nastepnie przejdziemy do pracy z kodem.
-2. Aby to wykonac potrzebujemy posiadać konto Google, jeśli nie chcemy korzystać z naszego oficjalnego konta, możemy stworzyć sobie nowe/do celów projektu konto Gmail, zajmie to mniej niz minutę, moze się to dodatkowo przydać w kolejnym etapie, aby dodać konto testowe dla kalendarza więc warto stworzyć.
+2. Aby to wykonać potrzebujemy posiadać konto Google, jeśli nie chcemy korzystać z naszego oficjalnego konta, możemy stworzyć sobie nowe/do celów projektu konto Gmail, zajmie to mniej niż minutę, może się to dodatkowo przydać w kolejnym etapie, aby dodać konto testowe dla kalendarza więc warto stworzyć.
 3. Przechodzimy do https://console.developers.google.com a tam:
-    - wybierz projekt a tam dodaj nowy projekt, nadajemy mu nazwę i zapisujemy, przechodzimy do tego projektu (ponieważ automatycznie po stworzeniu projektu nie przenosi nas do niego jeśli mamy też inne),
-    - ustawiamy "Ekran zgody OAuth" i klikamy ponownie "Utwórz dane logowania" a tam "Identyfikator klienta OAuth"
+    - wybierz projekt (ang: select a project) a tam dodaj nowy projekt(ang: New project), nadajemy mu nazwę i zapisujemy, przechodzimy do tego projektu (ponieważ automatycznie po stworzeniu projektu nie przenosi nas do niego jeśli mamy też inne),
+    - ustawiamy "Ekran zgody OAuth" (ang: OAuth consent screen) i klikamy ponownie "Utwórz dane logowania" a tam "Identyfikator klienta OAuth"
     - jako stronę główną aplikacji ustawiamy http://localhost:3000/users/sign_in
-    - w sekcji "Ekran zgody OAuth" dodajemy tez testowych userów, najlepiej dwa nasze konta Gmail (mozna tu uzyć tego nowo stworzonego wyzej)
-    - po dokonaniu ustawień w "Ekran zgody OAuth" przechodzimy do sekcji "Dane logowania"
-    - typ aplikacji: wybbieramy "Aplikacja internetowa"
-    - jako "Autoryzowany indentyfikator URI przekierowania" ustawiamy http://localhost:3000/users/auth/google_oauth2/callback
+    - w sekcji "Ekran zgody OAuth" (ang: OAuth consent screen) dodajemy też testowych userów, najlepiej dwa nasze konta Gmail (można tu użyć tego nowo stworzonego wyżej)
+    - po dokonaniu ustawień w "Ekran zgody OAuth" (ang: OAuth consent screen) przechodzimy do sekcji "Dane logowania" (ang: Credentials)
+    - typ aplikacji: wybieramy "Aplikacja internetowa"
+    - jako "Autoryzowany indentyfikator URI przekierowania" (ang: Authorized redirect URIs) ustawiamy http://localhost:3000/users/auth/google_oauth2/callback
     - zatwierdzamy i otrzymujemy odpowiednie credentiale dla utworzonego klienta OAuth
 4. Mamy juz wszystkie potrzebne credentiale więc zaczynamy pracę z kodem. Wychodzimy z głównego brancha `main` i tworzymy nowy branch dla tych zmian.
 5. Jeśli działasz na branchu, na którym nie masz dodanego gemu A9n to dodaj go analogicznie jak w zadaniu o API pogodowym. Przyda się do bezpiecznego zapisania naszych danych autoryzujących. Pamiętaj o dodaniu zmian w `.gitignore` dla pliku `config/configuration.yml`
@@ -94,14 +94,14 @@ na
 
 1. Zaczynamy od włączenia Google Calendar API. Wchodzimy na https://console.developers.google.com a tam:
  - pamiętamy, aby mieć zaklikany odpowiedni projekt z listy, wybieramy ten, na którym realizujemy nasz projekt (załozony w Etapie 1)
- - przechodzimy do sekcji "Biblioteka"
- - znajdujemy na liście "Google Calendar API", klikamy w to i włączamy ten interfejs API, klikamy "Włącz"
- - bedziemy go potem mogli podejrzeć w sekcji "Włączone interfejsy API..."
+ - przechodzimy do sekcji "Biblioteka" (ang: Library)
+ - znajdujemy na liście "Google Calendar API", klikamy w to i włączamy ten interfejs API, klikamy "Włącz" (ang: Enabled)
+ - bedziemy go potem mogli podejrzeć w sekcji "Włączone interfejsy API..." (ang: Enabled APIs & services)
 2. Dokumentacja API kalendarza Google znajduje się tu https://developers.google.com/calendar/api/v3/reference?hl=pl
-3. Upewniamy sie, ze jesteśmy na branchu dla tego zadania i dalej działamy z kodem.
+3. Upewniamy się, że jesteśmy na branchu dla tego zadania i dalej działamy z kodem.
 4. Dodajemy gema w Gemfile ułatwiającego korzystanie z Google Calendar API i uruchamimy `bundle`:
 `gem 'google-api-client', require: 'google/apis/calendar_v3'`
-5. Robimy migrację dla modelu `User` dodającą dodatkowe pole, w których zapiszemy dodatkowe informacje związane z autoryzacją poprzez OAuth"
+5. Robimy migrację dla modelu `User` dodającą dodatkowe pole, w których zapiszemy dodatkowe informacje związane z autoryzacją poprzez OAuth
 ```
 class AddOauthFieldsToUsers < ActiveRecord::Migration[7.0]
   def change
@@ -122,7 +122,7 @@ i odpalamy `rake db:migrate`
     scope: 'userinfo.email, calendar'
   }
 ```
-7. Modyfikujemy metodę w modelu `User` szukającą lub tworzącą usera
+7. Modyfikujemy metodę w modelu `User` szukającą lub tworzącą usera:
 ```  
   def self.from_omniauth(access_token)
     find_or_create_by(provider: access_token.provider, email:
@@ -141,8 +141,8 @@ i odpalamy `rake db:migrate`
 Zatem postaramy się tak skonstruować naszą akcję, aby dodawała event w dacie 2 tygodnie od dziś o tej samej godzinie. Czas trwania eventu to 1h.
 Stwórzmy zatem serwis, który zajmie się tym wszystkim `app/services/user_calendar_notifier.rb`.
  - na początek ustalmy też, że event bedziemy dodawać zawsze w głównym kalendarzu user, dodajmy więc stałą `  CALENDAR_ID = 'primary'.freeze`
- - stwórzmy teraz metodę, która zwróci nam klienta API dla danego usera `get_google_calendar_client(user)`
- Samego klienta tworzymy w ten sposób `client = Google::Apis::CalendarV3::CalendarService.new`.
+ - stwórzmy teraz metodę, która zwróci nam klienta API dla danego usera: `get_google_calendar_client(user)`
+ Samego klienta tworzymy w ten sposób: `client = Google::Apis::CalendarV3::CalendarService.new`.
  Warto zabezpieczyć jeśli nie ma usera lub nie posiada on tokena i refres_tokena:
  `return unless user.present? && user.token.present? && user.refresh_token.present?`
  Przygotujmy zestaw credentiali dla usera:
@@ -161,7 +161,7 @@ i przypiszmy je do naszego klienta:
 client.authorization = secrets.to_authorization
 client.authorization.grant_type = 'refresh_token'
 ```
-warto tez zabezpieczyć się na wypadek, gdyby coś poszło nie tak:
+warto też zabezpieczyć się na wypadek, gdyby coś poszło nie tak:
 ```
     begin
       client.authorization = secrets.to_authorization
@@ -193,29 +193,29 @@ require 'google/api_client/client_secrets'
     }
   end
 ```
-Aby nieco uprościć zapis kodu mozna skorzystać ze zdefiniowania terminu oddania ksiązki:
+Aby nieco uprościć zapis kodu można skorzystać ze zdefiniowania terminu oddania książki:
 ```
   def two_week_from_now
     Time.zone.now + 14.days
   end
 ```
-10. Na koniec w naszym serwisie musimy zdefiniować działanie metody, która doda event do kalendarza. Skorzystamy tu z metody wg dokumentacji Google Calendar API `insert_event` do której jako parametry podajemy id kalendarza oraz event:
+10. Na koniec w naszym serwisie musimy zdefiniować działanie metody, która doda event do kalendarza. Skorzystamy tu z metody wg dokumentacji Google Calendar API `insert_event`, do której jako parametry podajemy id kalendarza oraz event:
 ```
   def insert_event(user, book)
     client = get_google_calendar_client(user)
     client.insert_event(CALENDAR_ID, get_event(book))
   end
 ```
-11. Tak stworzoną akcję nalezy teraz podpiąć w odpowiednim miejscu aplikacji, które odpowiada za wypozyczenie ksiązki. Bedzie to akcja `create` w kontrolerze `app/controllers/book_loans_controller.rb`.
+11. Tak stworzoną akcję należy teraz podpiąć w odpowiednim miejscu aplikacji, które odpowiada za wypożyczenie ksiązki. Bedzie to akcja `create` w kontrolerze `app/controllers/book_loans_controller.rb`.
 12. Tworzymy w tym kontrolerze metodę odwołującą się do metody `insert_event(user, book)` z naszego serwisu z klientem API:
 ```
   def notice_calendar(book)
     UserCalendarNotifier.new.insert_event(current_user, book)
   end
 ```
-i wywołujemy ją w metodzie `create` kontrolera odpowiadającego za wypozyczenie w sekcji, która kończy się sukcesem, wystarczy zatem, ze wywołamy tam `notice_calendar(book)`.
-13. Sprawdźmy teraz czy nasze zmiany zadziałały. Zalogujmy się do aplikacji kontem Google a następnie kliknijmy na button "Loan" przy jednej z ksiązek. W kalendarzu Google sprawdźmy czy w dacie za dwa tygodnie od dziś pojawiło się nowe wydarzenie. Jeśli tak to gratulacje, właśnie zakończyłeś/aś zadanie!
+i wywołujemy ją w metodzie `create` kontrolera odpowiadającego za wypożyczenie w sekcji, która kończy się sukcesem, wystarczy zatem, ze wywołamy tam `notice_calendar(book)`.
+13. Sprawdźmy teraz czy nasze zmiany zadziałały. Zalogujmy się do aplikacji kontem Google (ważne: konto musi być dodane jako testowe w panelu API dla developerów) a następnie kliknijmy na button "Loan" przy jednej z książek. W kalendarzu Google sprawdźmy czy w dacie za dwa tygodnie od dziś pojawiło się nowe wydarzenie. Jeśli tak to gratulacje, właśnie zakończyłeś/aś zadanie!
 
 ## Zadanie dodatkowe
 
-1. Spróbuj zapisać w bazie id eventu tworzonego w kalendarzu i w momencie oddania ksiązki usuń event z kalendarza.
+1. Spróbuj zapisać w bazie id eventu tworzonego w kalendarzu i w momencie oddania książki usuń event z kalendarza.
