@@ -409,7 +409,6 @@ DEPENDENCIES
   factory_bot_rails
   faker
   google-api-client
-  googleauth
   importmap-rails
   jbuilder
   letter_opener

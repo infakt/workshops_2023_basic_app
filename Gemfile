@@ -52,7 +52,6 @@ gem 'sassc-rails'
 gem 'a9n'
 gem 'devise'
 gem 'google-api-client', require: 'google/apis/calendar_v3'
-gem 'googleauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 
