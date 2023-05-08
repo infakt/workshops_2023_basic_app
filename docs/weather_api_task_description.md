@@ -31,10 +31,34 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
  - temperatura
  - tekstowy opis
  - ikonka pokazująca graficzną reprezentację opisu
-3. Tworzymy serwis, który bedzie nam pobierał komplet bieżących danych pogodowych `app/services/weather_api_connector.rb`.
-4. Tu przykładowy artykuł listujący metody tworzenia requestów do API https://www.twilio.com/blog/5-ways-make-http-requests-ruby, skorzystamy z tej pierwszej.
-5. Wartości przekazujące klucz API oraz lokalizację możemy zapisac do stałych (lub zapisać je w innym miejscu korzystając z gema A9n, rozpracujemy to w kolejnym zadaniu więc potem mozesz to ulepszyć).
-6. Tworzymy metodę, która wykona request na odpowiedni adres z parametrami, jakie ustalimy a nastepnie zapisze pod zmienną `@data` dane odpowiedzi:
+3. Najpierw zapiszmy nasz klucz API w bezpiecznym miejscu, do którego będziemy się odnosić w kodzie. Wykorzystamy do tego gem 'A9n':
+ - dodajemy gem do Gemfile; gem 'a9n' i uruchamiamy `bundle`
+ - w pliku `config/application.rb` dodajemy odpowiedni zapis w kontekscie A9n
+    ```
+    A9n.root = File.expand_path('..', __dir__)
+    A9n.load
+    ```
+ - tworzymy plik `config/configuration.yml.example`, w którym dodajemy nasz klucz, ale... aby nie był on publicznie dostępny wskazujemy tu jedynie, że to jest miejsce na ten klucz
+    ```
+    defaults:
+      weather_api_key: '__your_api_key__'
+    ```
+ - nasz właściwy klucz dodajemy w pliku `config/configuration.yml`, który wykluczamy ze śledzonych zmian poprzez dodanie zapisu w .gitignore
+    ```
+    # Ignore personal configuration
+    /config/configuration.yml
+    ```
+
+4. Tworzymy serwis, który bedzie nam pobierał komplet bieżących danych pogodowych `app/services/weather_api_connector.rb`.
+5. Tu przykładowy artykuł listujący metody tworzenia requestów do API https://www.twilio.com/blog/5-ways-make-http-requests-ruby, skorzystamy z tej pierwszej.
+6. Wartości przekazujące klucz API oraz lokalizację zapisujemy do stałych, jeśli chodzi o lokalizację to dla uproszczenia przyjmujemy, że pobieramy dane dla Krakowa:
+```
+API_KEY = A9n.weather_api_key
+LOCATION = 'Cracow'
+```
+
+7. Tworzymy metodę, która wykona request na odpowiedni adres z parametrami, jakie ustalimy a nastepnie zapisze pod zmienną `@data` dane odpowiedzi:
+
 ```
 def weather_data
   url = "http://api.weatherapi.com/v1/current.json?key=#{API_KEY}&q=#{LOCATION}"
@@ -43,8 +67,12 @@ def weather_data
   @data = JSON.parse(response)
 end
 ```
-7. Aby ładnie zaprezentować nasze dane pogodowe i tylko te, które sobie zaplanowaliśmy korzytamy z nowej warstwy abstrakcji i tworzymy presenter `app/presenters/weather_presenter.rb`.
-8. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymu metody:
+Jak sprawdzić czy do tego miejsca działamy prawidłowo?
+Spróbuj w konsoli wywolać metodę `weather_data` z naszego serwisu, czyli `WeatherApiConnector.new.weather_data`, powinna nam ona zwrócić komplet danych z api pogodowego. 
+Przy okazji pomoże nam to przygotować się do "wyłuskania" potrzebnych danych w kolejnym kroku.
+
+8. Aby ładnie zaprezentować nasze dane pogodowe i tylko te, które sobie zaplanowaliśmy korzytamy z nowej warstwy abstrakcji i tworzymy presenter `app/presenters/weather_presenter.rb`.
+9. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymu metody:
  - wyciągające określone dane z całego zestawu: `description`, `temperature`, `icon`
  - w dokumentacji możemy znaleźć zestaw wszystkich możliwych danych opisowych, jakie możemy otrzymać w zwrotce, po ich przejrzeniu można ustalić, ze ładna pogoda jest gdy:
 ```
@@ -68,18 +96,32 @@ def encourage_text
   end
 end
 ```
-9. Tworzymy plik widoku `app/views/weather/show.html.erb`, w którym możemy bazować na metodach z naszego presentera, aby zdynamizować wyświetlane treści.
-10. Plik ten musimy wywołać w głównym layoucie aplikacji, z racji, ze chcemy, aby element ten wyświetlał się na każdej ze stron, dodajemy więc do `app/views/layouts/application.html.erb` dodatkowy div, w którym bedziemy renderować nasz widok pogody, należy pamiętać, aby w `locals` uzyć presentera, z którego metod korzystamy:
+
+Jak sprawdzić czy dobrze działa nasz presenter?
+W kosoli zapisz sobie pod zmienną wywołanie presentera, np. `presenter = WeatherApiPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
+Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak należy poprawiamy.
+10. Aby metody z naszego presentera były dostępne w całej aplikacji dodajemy odpowiednie metody w `app/helpers/application_helper.rb`, dzięki temu będą one dostępne globalnie:
+```
+  def weather_data
+    @weather_data ||= WeatherApiConnector.new.weather_data
+  end
+
+  def weather_presenter
+    @weather_presenter ||= WeatherPresenter.new(weather_data)
+  end
+```
+Tip: metoda `weather_data` jest na ten moment używana tylko w presenterze więc można ją przenieść do presentera.
+
+11. Tworzymy plik widoku, partialL `app/views/weather/_show.html.erb`, w którym możemy bazować na metodach z naszego presentera, aby zdynamizować wyświetlane treści. Ponieważ dostęp do presentera zapieliśmy tak "wysoko" jak się da, odwołanie do jego metod na widoku bedzie odbywać się w taki sposób `  <%= weather_presenter.description %>`.
+12. Plik ten musimy wywołać w głównym layoucie aplikacji, z racji, ze chcemy, aby element ten wyświetlał się na każdej ze stron, dodajemy więc do `app/views/layouts/application.html.erb` dodatkowy div, w którym bedziemy renderować nasz widok pogody:
 ```
 <div class="container">
-  <%= render template: "weather/show", locals: { presenter: @presenter } %>
+  <%= render parial: "weather/show" %>
 </div>
 ```
-11. Dla dopracowania finalnego efektu wizualnego, ułożenia naszego elementu pogodowego mozemy podziałać ze stylami bootstrapa, tutaj dokumentacja https://getbootstrap.com/docs/3.4/css/.
-12. Jeśli jako efekt końcowy widzisz bieżące dane pogodowe wraz z tekstem zachęcającym do czytania to właśnie udało Ci się zakończyć pierwsze zadanie.
+13. Dla dopracowania finalnego efektu wizualnego, ułożenia naszego elementu pogodowego mozemy podziałać ze stylami bootstrapa, tutaj dokumentacja https://getbootstrap.com/docs/3.4/css/.
+14. Jeśli jako efekt końcowy widzisz bieżące dane pogodowe wraz z tekstem zachęcającym do czytania to właśnie udało Ci się zakończyć pierwsze zadanie.
 
-
-
-
-
-
+# Zadania dodatkowe dla chętnych
+1. (z jedną gwiazdką) Dopisz specki dla presentera.
+2. (z dwoma gwiazdkami) Zmodyfikuj działanie serwisu, aby pobierał lokalizację użytkownika i przekazuj ją jako parametr do zapytania API.
