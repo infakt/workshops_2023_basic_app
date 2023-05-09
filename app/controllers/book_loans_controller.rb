@@ -41,6 +41,6 @@ class BookLoansController < ApplicationController
   end
 
   def notice_calendar(book)
-    UserCalendarNotifier.new.insert_event(current_user, book)
+    UserCalendarNotifier.new(current_user, book).insert_event
   end
 end
