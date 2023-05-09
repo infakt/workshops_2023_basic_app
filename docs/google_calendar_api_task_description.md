@@ -110,12 +110,13 @@ na
  - bedziemy go potem mogli podejrzeć w sekcji "Włączone interfejsy API..." (ang: Enabled APIs & services)
 2. Dokumentacja API kalendarza Google znajduje się tu https://developers.google.com/calendar/api/v3/reference?hl=pl
 3. Zanim zaczniemy modyfikować kod i testować zmiany dobrze jest usunąc lokalnie z konsoli usera z naszym adresem email, którym testowaliśmy logowanie przez kontro Google.
-Poniewa nie ma on ustawionego tokena i refresh_tokena pojawi nam się błąd w dalszych etapach. Moglibyśmy podjąc się uzupełnienia tych danych, ale na tym etapie upraszczamy działanie, aby móc skupic sie na kontynuacji zadania.
+Ponieważ nie ma on ustawionego tokena i refresh_tokena pojawi nam się błąd w dalszych etapach. Moglibyśmy podjąc się uzupełnienia tych danych, ale na tym etapie upraszczamy działanie, aby móc skupic sie na kontynuacji zadania.
 Uruchamiamy zatem konsolę `rails c` i znajdujemy naszego usera `user = User.find_by(email: ...)` i usuwamy go `user.destroy`.
 Upewniamy się, że jesteśmy na branchu dla tego zadania i dalej działamy z kodem.
 4. Dodajemy gema w Gemfile ułatwiającego korzystanie z Google Calendar API i uruchamimy `bundle`:
 `gem 'google-api-client', require: 'google/apis/calendar_v3'`
 5. Robimy migrację dla modelu `User` dodającą dodatkowe pole, w których zapiszemy dodatkowe informacje związane z autoryzacją poprzez OAuth
+Skorzystaj klasycznie z `rails g migration` - timestamp będzie potrzebny dla "prawidłowej" migracji<br>
 ```
 class AddOauthFieldsToUsers < ActiveRecord::Migration[7.0]
   def change
@@ -127,6 +128,7 @@ class AddOauthFieldsToUsers < ActiveRecord::Migration[7.0]
 end
 ```
 i odpalamy `rake db:migrate`
+
 6. Dodany w etapie 1 zapis w `config/initializers/devise.rb` modyfikujemy uzupełniając pusty dotychczas hash o elementy potrzebne do integracji z kalendarzem:
 ```
   config.omniauth :google_oauth2, A9n.google_client_id, A9n.google_client_secret, {
@@ -159,7 +161,7 @@ Docelowo jego zadaniem będzie dodanie eventu dla danej książki, dla danego us
 Żeby to osiągnąć będziemy potrzebowali:
 <ul>
 <li>Przekazać do naszego serwisu usera oraz książkę (żeby wiedzieć komu i jaki event dodać)</li>
-<li>tworzyć metodę, która buduje komunikację z kalendarzem (API Google Calendar)</li>
+<li>stworzyć metodę, która buduje komunikację z kalendarzem (API Google Calendar)</li>
 <li>Określić parametry eventu, który będziemy chcieli przekazać do kalendarza</li>
 <li>Wreszcie - dodać metodę, która dodaje event do kalendarza</li>
 </ul>
@@ -178,23 +180,25 @@ Ustalmy też, że event bedziemy dodawać zawsze w głównym kalendarzu user, do
 10. Dodajmy metodę, która będzie umiała skomunikować się z API Google calendar - stwórzmy tzw client-a `google_calendar_client`.
 Samego klienta inicjalizujemy w ten sposób: `client = Google::Apis::CalendarV3::CalendarService.new`.
 
-Warto zabezpieczyć jeśli user nie posiada on tokena i refres_tokena., czyli np jezeli nie zarejestrowal/zalogowal sie z Googlem  - wtedy będziemy chcieli w ogóle wyjśc z akcji:
-`return unless user.token.present? && user.refresh_token.present?`
+Na początku klasy musimy też załączyć odpowiednie biblioteki, żeby wszystko zadziałało:
+
+```ruby
+require 'google/apis/calendar_v3'
+require 'google/api_client/client_secrets'
+```
 
 11. Czyli w tym momencie nasza metoda wygląda:
 
 ```
 def google_calendar_client
   client = Google::Apis::CalendarV3::CalendarService.new
-
-  return unless user.token.present? && user.refresh_token.present?
 end
 ```
 
 A jej wywołanie, w całości: `UserCalendarNotifier.new(user, book).google_calendar_client`
 
 Ale to dopiero początek:) w ten spoób jedynie zainicjowaliśmy komunikację.
-Potrzebujemy teraz się zautoryzować, rozszerzymy więc metodę naszego klienta o secrets-y, mozemy je wydzieliś do osobnej metody:
+Potrzebujemy teraz się zautoryzować, rozszerzymy więc metodę naszego klienta o secrets-y, mozemy je wydzielić do osobnej metody:
 ```
 def secrets
     Google::APIClient::ClientSecrets.new({
@@ -234,6 +238,11 @@ Sprawdzmy sobie w konsoli: `UserCalendarNotifier.new(User.last, Book.last).googl
 
 Możemy też sprawdzic, czy jesteśmy w stanie naszym klientem pobrać listę kalendarzy: 
 `UserCalendarNotifier.new(User.last, Book.last).send(:google_calendar_client).get_calendar('primary')`
+<strong>Uwaga</strong> - jeżeli dostajesz błąd unauthorized - upewnij się, że dla danego usera, na którym testujesz w konsoli masz aktywną sesję w przeglądarce (do komunikacji z API Google Calendar wykorzystujemy token, ktory mógł wygasnąć!)
+```
+Caught error Unauthorized
+Error - #<Google::Apis::AuthorizationError: Unauthorized status_code: 401
+```
 
 13. Ok! Wiemy już ze potrafimy nawiązać połączenie z API kalendarza, dla naszego konkretnego usera;
 Spróbujmy teraz dodać metodę która dodaje event w kalendarzu.
@@ -266,6 +275,13 @@ def insert_event
   get_google_calendar_client.insert_event(CALENDAR_ID, event_data)
 end
 ```
+
+Warto zabezpieczyć się też na wypadek, gdybysz nasz user np. nie byl zintegrowany z Googlem (nie miał tokena/refresh tokena) - w takiej sytuacji - po prostu nie będziemy podejmowali komunikacji z Google:
+
+```ruby
+return unless user.token.present? && user.refresh_token.present?
+```
+
 W zasadzie to jedyna nasza publiczna metoda! Chcemy, żeby tylko z tego inserta mozna było skorzystac z zewnątrz, czyli chcemy, żeby można bylo wywołać:
 `UserCalendarNotifier.new(user, book).insert_event`
 
@@ -344,6 +360,7 @@ end
   end
 ```
 i wywołujemy ją w metodzie `create` kontrolera odpowiadającego za wypożyczenie w sekcji, która kończy się sukcesem, wystarczy zatem, ze wywołamy tam `notice_calendar`.
+
 17. Sprawdźmy teraz czy nasze zmiany zadziałały. 
 Zalogujmy się do aplikacji kontem Google (ważne: konto musi być dodane jako testowe w panelu API dla developerów) a następnie kliknijmy na button "Loan" przy jednej z książek. 
 W kalendarzu Google sprawdźmy czy w dacie za dwa tygodnie od dziś pojawiło się nowe wydarzenie. Jeśli tak to gratulacje, właśnie zakończyłeś/aś zadanie!
