@@ -123,7 +123,8 @@ Tip: metoda `weather_data` jest na ten moment używana tylko w presenterze więc
 13. Dla dopracowania finalnego efektu wizualnego, ułożenia naszego elementu pogodowego mozemy podziałać ze stylami bootstrapa, tutaj dokumentacja https://getbootstrap.com/docs/3.4/css/.
 14. Jeśli jako efekt końcowy widzisz bieżące dane pogodowe wraz z tekstem zachęcającym do czytania to właśnie udało Ci się zakończyć pierwsze zadanie.
 Całość powinna się prezentować tak:
-![weather](app/assets/images/docs/weather_element.png)
+
+<img src="../app/assets/images/docs/weather_element.png" />
 
 # Zadania dodatkowe dla chętnych
 1. (z jedną gwiazdką) Dopisz specki dla presentera.
