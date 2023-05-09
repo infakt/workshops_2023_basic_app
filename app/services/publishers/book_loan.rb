@@ -6,7 +6,7 @@ module Publishers
 
     def publish
       ::Publishers::Application.new(
-        routing_key: 'book_loan',
+        routing_key: 'basic_app.book_loans',
         exchange_name: 'basic_app',
         message: { data: data }
       ).perform

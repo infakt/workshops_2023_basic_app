@@ -10,7 +10,7 @@ module Publishers
 
     def perform
       channel = connection.create_channel
-      exchange = channel.topic(exchange_name, durable: true, ack: true)
+      exchange = channel.topic(exchange_name, ack: true)
       exchange.publish(message.to_json, routing_key: routing_key)
       connection.close
     end
