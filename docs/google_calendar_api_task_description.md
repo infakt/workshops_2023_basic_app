@@ -55,7 +55,7 @@ a w pliku `config/configuration.yml` zapisujemy nasze prawdziwe dane.
  - definiujemy ścieżkę dla callbacków w `config/routes.rb` (aktualizujemy aktualny wiersz z `devise_for :users` a nie dodajemy nowego): `devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }`
  - w modelu `User` powiązujemy lub tworzymy usera:
 
-```  
+```ruby
    def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data['email']).first
@@ -72,7 +72,7 @@ a w pliku `config/configuration.yml` zapisujemy nasze prawdziwe dane.
  oraz upewniamy się, że nasz model jest `omniauthable` czyli dodajemy zapis `devise :omniauthable, omniauth_providers: [:google_oauth2]`
 
  - następnie musimy stworzyć odpowiednio kontroler dla callbacków `app/controllers/users/omniauth_callbacks_controller.rb`:
-```
+```ruby
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     @user = User.from_omniauth(request.env['omniauth.auth'])
@@ -117,7 +117,7 @@ Upewniamy się, że jesteśmy na branchu dla tego zadania i dalej działamy z ko
 `gem 'google-api-client', require: 'google/apis/calendar_v3'`
 5. Robimy migrację dla modelu `User` dodającą dodatkowe pole, w których zapiszemy dodatkowe informacje związane z autoryzacją poprzez OAuth
 Skorzystaj klasycznie z `rails g migration` - timestamp będzie potrzebny dla "prawidłowej" migracji<br>
-```
+```ruby
 class AddOauthFieldsToUsers < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :provider, :string
@@ -130,7 +130,7 @@ end
 i odpalamy `rake db:migrate`
 
 6. Dodany w etapie 1 zapis w `config/initializers/devise.rb` modyfikujemy uzupełniając pusty dotychczas hash o elementy potrzebne do integracji z kalendarzem:
-```
+```ruby
   config.omniauth :google_oauth2, A9n.google_client_id, A9n.google_client_secret, {
     access_type: "offline", 
     prompt: "consent",
@@ -139,7 +139,7 @@ i odpalamy `rake db:migrate`
   }
 ```
 7. Modyfikujemy metodę w modelu `User` szukającą lub tworzącą usera:
-```  
+```ruby
   def self.from_omniauth(access_token)
     find_or_create_by(provider: access_token.provider, email:
       access_token.info.email) do |user|
@@ -169,7 +169,7 @@ Docelowo jego zadaniem będzie dodanie eventu dla danej książki, dla danego us
 Idąc po kolei:
 
 9. Skoro nasz serwis potrzebuje wiedziec o userze i książce - niech będą przekazywane do initializera serwisu:
-```
+```ruby
   def initialize(user, book)
     @user = user
     @book = book
@@ -189,7 +189,7 @@ require 'google/api_client/client_secrets'
 
 11. Czyli w tym momencie nasza metoda wygląda:
 
-```
+```ruby
 def google_calendar_client
   client = Google::Apis::CalendarV3::CalendarService.new
 end
@@ -199,7 +199,7 @@ A jej wywołanie, w całości: `UserCalendarNotifier.new(user, book).google_cale
 
 Ale to dopiero początek:) w ten spoób jedynie zainicjowaliśmy komunikację.
 Potrzebujemy teraz się zautoryzować, rozszerzymy więc metodę naszego klienta o secrets-y, mozemy je wydzielić do osobnej metody:
-```
+```ruby
 def secrets
     Google::APIClient::ClientSecrets.new({
       'web' => {
@@ -217,11 +217,9 @@ Tu link, jeśli potrzebujesz na szybko przyswoic temat obsługi wyjątków https
 
 12. Finalna postać klienta:
 
-```
+```ruby
   def google_calendar_client(user)
     client = Google::Apis::CalendarV3::CalendarService.new
-
-    return unless user.token.present? && user.refresh_token.present?
 
     begin
       client.authorization = secrets.to_authorization
@@ -250,7 +248,7 @@ Spróbujmy teraz dodać metodę która dodaje event w kalendarzu.
 Musimy sobie przygotować dane opisujące ten event - wydzielmy to do osobnej metody, określając też “za dwa tygodnie”, również w osobnej metodzie
 Protip: używamy memoizacji, żeby “now” nie zwrociło nam przy każdym wywołaniu innej daty i godziny:
 
-```
+```ruby
 def event_data
   {
     summary: "Oddać książkę: #{book.title}",
@@ -270,7 +268,7 @@ end
 ```
 14. Wykorzystamy teraz te dane w metodzie, która wywołuje na kliencie dodanie eventu:
 
-```
+```ruby
 def insert_event
   get_google_calendar_client.insert_event(CALENDAR_ID, event_data)
 end
@@ -287,7 +285,7 @@ W zasadzie to jedyna nasza publiczna metoda! Chcemy, żeby tylko z tego inserta 
 
 To oznacza, ze wszystko inne, mozemy przenieść do metod prywatnych. Końcowa forma klasy:
 
-```
+```ruby
 require 'google/apis/calendar_v3'
 require 'google/api_client/client_secrets'
 
@@ -354,7 +352,7 @@ end
 
 15. Tak stworzoną akcję należy teraz podpiąć w odpowiednim miejscu aplikacji, które odpowiada za wypożyczenie ksiązki. Bedzie to akcja `create` w kontrolerze `app/controllers/book_loans_controller.rb`.
 16. Tworzymy w tym kontrolerze metodę odwołującą się do metody `insert_event` z naszego serwisu z klientem API:
-```
+```ruby
   def notice_calendar
     UserCalendarNotifier.new(current_user, book).insert_event
   end
