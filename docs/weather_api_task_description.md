@@ -98,7 +98,7 @@ end
 ```
 
 Jak sprawdzić czy dobrze działa nasz presenter?
-W kosoli zapisz sobie pod zmienną wywołanie presentera, np. `presenter = WeatherApiPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
+W kosoli zapisz sobie pod zmienną wywołanie presentera, np. `presenter = WeatherPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
 Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak należy poprawiamy.
 
 10. Aby metody z naszego presentera były dostępne w całej aplikacji dodajemy odpowiednie metody w `app/helpers/application_helper.rb`, dzięki temu będą one dostępne globalnie:
