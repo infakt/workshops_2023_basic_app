@@ -113,7 +113,7 @@ Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak nale
 ```
 Tip: metoda `weather_data` jest na ten moment używana tylko w presenterze więc można ją przenieść do presentera.
 
-11. Tworzymy plik widoku, partialL `app/views/weather/_show.html.erb`, w którym możemy bazować na metodach z naszego presentera, aby zdynamizować wyświetlane treści. Ponieważ dostęp do presentera zapieliśmy tak "wysoko" jak się da, odwołanie do jego metod na widoku bedzie odbywać się w taki sposób `  <%= weather_presenter.description %>`.
+11. Tworzymy plik widoku, partial `app/views/weather/_show.html.erb`, w którym możemy bazować na metodach z naszego presentera, aby zdynamizować wyświetlane treści. Ponieważ dostęp do presentera zapieliśmy tak "wysoko" jak się da, odwołanie do jego metod na widoku bedzie odbywać się w taki sposób `  <%= weather_presenter.description %>`.
 12. Plik ten musimy wywołać w głównym layoucie aplikacji, z racji, ze chcemy, aby element ten wyświetlał się na każdej ze stron, dodajemy więc do `app/views/layouts/application.html.erb` dodatkowy div, w którym bedziemy renderować nasz widok pogody (dodajemy nasz div prze zamknieciem znacznika nav):
 ```
 <div class="container">
