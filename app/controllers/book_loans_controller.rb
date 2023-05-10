@@ -7,7 +7,7 @@ class BookLoansController < ApplicationController
       if @book_loan.save
         format.html { redirect_to book_url(book), notice: flash_notice }
         format.json { render :show, status: :created, location: @book_loan }
-        notice_calendar(book)
+        notice_calendar
       else
         format.html { redirect_to book_url(book), alert: @book_loan.errors.full_messages.join(', ') }
         format.json { render json: @book_loan.errors, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class BookLoansController < ApplicationController
     params.require(:book_id)
   end
 
-  def notice_calendar(book)
+  def notice_calendar
     UserCalendarNotifier.new(current_user, book).insert_event
   end
 end
