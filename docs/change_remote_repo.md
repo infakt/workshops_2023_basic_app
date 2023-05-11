@@ -24,8 +24,8 @@ Przykład:
 `git remote -v`
 Powinno pojawić się coś takiego:
 ```
-origin	git@github.com:infakt/workshops_2023_basic_app.git (fetch)
-origin	git@github.com:infakt/workshops_2023_basic_app.git (push)
+origin	https://github.com/infakt/workshops_2023_basic_app.git (fetch)
+origin	https://github.com/infakt/workshops_2023_basic_app.git (push)
 ```
 Jak widać tzw `origin` czyli domyślne zdalne repozytorium - jest ustawione na **infakt**
 6. Zmieńmy nazwę tego zdalnego repozytorium na `infakt`, żeby nie stracić do niego referencji
@@ -33,8 +33,8 @@ Jak widać tzw `origin` czyli domyślne zdalne repozytorium - jest ustawione na 
 Wylistujmy ponownie `git remote -v`
 Powinno pojawić się coś takiego:
 ```
-infakt	git@github.com:infakt/workshops_2023_basic_app.git (fetch)
-infakt	git@github.com:infakt/workshops_2023_basic_app.git (push)
+infakt	https://github.com/infakt/workshops_2023_basic_app.git (fetch)
+infakt	https://github.com/infakt/workshops_2023_basic_app.git (push)
 ```
 
 7. Ok, teraz czas dodać **Twoje** repo jako domyślne
@@ -45,8 +45,8 @@ Np dla usera na githubie Dellilah:
 8. W ten sposób udało się zmienić domyślne, zdalne repo, zostawiając nawiązanie do infakt-owego!
 `git remote -v`
 ```
-infakt	git@github.com:infakt/workshops_2023_basic_app.git (fetch)
-infakt	git@github.com:infakt/workshops_2023_basic_app.git (push)
+infakt	https://github.com/infakt/workshops_2023_basic_app.git (fetch)
+infakt	https://github.com/infakt/workshops_2023_basic_app.git (push)
 origin	git@github.com:Dellilah/workshops_2023_basic_app.git (fetch)
 origin	git@github.com:Dellilah/workshops_2023_basic_app.git (push)
 ```
