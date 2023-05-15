@@ -168,12 +168,16 @@ Docelowo jego zadaniem będzie dodanie eventu dla danej książki, dla danego us
 
 Idąc po kolei:
 
-9. Skoro nasz serwis potrzebuje wiedziec o userze i książce - niech będą przekazywane do initializera serwisu:
+9. Skoro nasz serwis potrzebuje wiedziec o userze i książce - niech będą przekazywane do initializera serwisu (pamiętajmy od razu o attr_reader'ach!):
 ```ruby
   def initialize(user, book)
     @user = user
     @book = book
   end
+  
+  private
+  
+  attr_reader :book, :user
 ```
 Ustalmy też, że event bedziemy dodawać zawsze w głównym kalendarzu user, dodajmy więc stałą  `CALENDAR_ID = 'primary'.freeze`
 
