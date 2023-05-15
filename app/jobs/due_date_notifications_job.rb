@@ -1,4 +1,6 @@
-class DueDateNotificationsJob < ActiveJob::Base
+class DueDateNotificationsJob
+  include Sidekiq::Job
+
   def perform
     # for notification testing purposes
     # BookLoan.where(due_date: Time.current..Time.current + 4.minutes).each do |book_loan|
