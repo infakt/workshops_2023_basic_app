@@ -1,7 +1,7 @@
 # Zadania w tle - wysyłanie wiadomości email z użyciem Sidekiq
 ## Cel zadania
 
-Po wypożyczeniu książki, chcemy w tle wysyłać użytkownikowi email informujący o udanym wypożyczeniu i założonej z góry dacie oddania ksiązki. W tym celu potrzebować będziemy gema `Sidekiq` do przetwarzania zadań w tle. Oprócz tego stworzymy klasę mailera oraz templatkę wiadomości.
+Po wypożyczeniu książki, chcemy w tle wysyłać użytkownikowi email informujący o udanym wypożyczeniu i założonej z góry dacie oddania książki. W tym celu potrzebować będziemy gema `Sidekiq` do przetwarzania zadań w tle. Oprócz tego stworzymy klasę mailera oraz templatkę wiadomości.
 
 ## Zaczynamy!
 
