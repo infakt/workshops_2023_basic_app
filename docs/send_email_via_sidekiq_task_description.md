@@ -12,6 +12,7 @@ Zmiennych instancyjnych potrzebujemy, żeby móc wykorzystać je później w sza
 ## Gdzie ta templatka?
 
 Nigdzie. 😎
+
 Stwórz katalog `app/views/user_mailer` i w pliku nazwanym tak, jak Twoja metoda w mailerze (`loan_created_email.html.erb`) napisz wymyśloną przez Ciebie treść maila, wykorzystując wartości zapisane wcześniej do zmiennych w taki sposób, aby wyrenderowana później wiadomość zawierała tytuł książki oraz informację o tym, do kiedy należy ją zwrócić. Z racji, że jest to ten sam typ pliku, co widoki w aplikacji, możesz korzystać z ERB-a (embedded Ruby), czyli znaczników zawierających kod Ruby, w naszym przypadku np. <%= @title %>.
 
 Po uzupełnieniu szablonu uruchom konsolę `rails c` i spróbuj "ręcznie" wysłać tego maila.
