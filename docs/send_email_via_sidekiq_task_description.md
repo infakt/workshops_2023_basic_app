@@ -54,6 +54,14 @@ def perform(book_loan_id)
 end
 ```
 
+## Czas w aplikacji
+
+Dla dokładnego zwracania godziny w aplikacji (z właściwej strefy czasowej) warto dodać w pliku `config/application.rb` linię
+```
+config.time_zone = 'Warsaw'
+```
+np. w wierszu 13.
+
 ## Co dalej?
 
 Mamy już wszystko gotowe, żeby wysłać prostego maila. Teraz należy wywołać `Job`a w odpowiednim miejscu. Kiedy chcemy wysyłać wiadomość? Po udanym przebiegu wypożyczenia - czyli w `BookLoansController#create`, w gałęzi `if`a odpowiadającej za prawidłowy zapis obiektu wypożyczenia.
