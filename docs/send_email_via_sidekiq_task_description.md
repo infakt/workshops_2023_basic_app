@@ -30,8 +30,8 @@ Metoda mailera zwróci nam obiekt wiadomości. Dlatego, żeby ją wysłać, musi
 
 Przykładowa definicja metody `perform`:
 ```
-def perform(id)
-  book_loan = BookLoan.find(id)
+def perform(book_loan_id)
+  book_loan = BookLoan.find(book_loan_id)
 
   UserMailer.loan_created_email(book_loan).deliver_now
 end
