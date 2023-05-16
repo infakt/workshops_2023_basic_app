@@ -16,13 +16,23 @@ Stwórz katalog `app/views/user_mailer` i w pliku nazwanym tak, jak Twoja metoda
 
 Dodaj do aplikacji gem `Sidekiq`, np. wywołując w katalogu projektu polecenie `bundle add sidekiq`.
 
-Stwórz katalog `app/jobs`, a w nim klasę z przyrostkiem `Job` na końcu. Zgodnie z konwencją, powinna nazywać się podobnie jak Twoja metoda mailera oraz plik z treścią wiadomości email, np. `LoanCreatedJob`(`loan_created_job.rb`). Klasa powinna dziedziczyć po `ActiveJob::Base` i zawierać metodę `perform`, w której należy wywołać metodę mailera (nie musisz tworzyć obiektu mailera, metody mailera są statyczne).
+Stwórz katalog `app/jobs`, a w nim klasę z przyrostkiem `Job` na końcu. Zgodnie z konwencją, powinna nazywać się podobnie jak Twoja metoda mailera oraz plik z treścią wiadomości email, np. `LoanCreatedJob`(`loan_created_job.rb`). Dodaj do niej `include` jak poniżej:
+```
+class SomeJob
+  include Sidekiq::Job
 
-Metoda mailera zwróci nam obiekt wiadomości. Dlatego, żeby ją wysłać, musimy wywołać bezpośrednio na nim jeszcze jedną metodę, np. `deliver_now` lub `deliver_later`. O różnicy między tymi dwoma będzie później.
+  def perform; end
+end
+```
+Klasa powinna zawierać metodę `perform`, w której należy wywołać metodę mailera (nie musisz tworzyć obiektu mailera, metody mailera są statyczne).
+
+Metoda mailera zwróci nam obiekt wiadomości. Dlatego, żeby ją wysłać, musimy wywołać bezpośrednio na nim jeszcze jedną metodę, np. `deliver_now` lub `deliver_later`.
 
 Przykładowa definicja metody `perform`:
 ```
-def perform(book_loan)
+def perform(id)
+  book_loan = BookLoan.find(id)
+
   UserMailer.loan_created_email(book_loan).deliver_now
 end
 ```
@@ -31,7 +41,7 @@ end
 
 Mamy już wszystko gotowe, żeby wysłać prostego maila. Teraz należy wywołać `Job`a w odpowiednim miejscu. Kiedy chcemy wysyłać wiadomość? Po udanym przebiegu wypożyczenia - czyli w `BookLoansController#create`, w gałęzi `if`a odpowiadającej za prawidłowy zapis obiektu wypożyczenia.
 
-Nad `format.html(...)` umieszczamy wywołanie, np. `LoanCreatedJob.perform_later(@book_loan)` (metoda w `Job`ie ma się nazywać `perform`, to nie pomyłka 🙂). O wywołaniach związanych z `ActiveJob` więcej [tutaj](https://edgeguides.rubyonrails.org/active_job_basics.html).
+Nad `format.html(...)` umieszczamy wywołanie, np. `LoanCreatedJob.perform_async(@book_loan.id)` (metoda w `Job`ie ma się nazywać `perform`, to nie pomyłka 🙂).
 
 ## Testujemy!
 Wypożycz książkę przez aplikację webową. Jeżeli wszystko wykonałeś poprawnie, w nowej karcie powinna otworzyć się Twoja wiadomość (to dzięki gemowi `letter_opener`!). 👏
