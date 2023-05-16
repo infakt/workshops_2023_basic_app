@@ -47,7 +47,7 @@ Nazwijmy go `Publishers::Application`. Powinien on być inicializowany trzema pa
 4. Główna metoda (publiczna )tego serwisu, z której będziemy korzystać powinna:
   - startować (`.start`) *połączenie*,
   - Tworzyć *kanał* (`connection.create_channel`)
-  - Tworzyć tematyczny *exchange* (`channel.topic()`), który w parametrze przyjmuje nazwę exchange'a z initializera.
+  - Tworzyć bezpośredni *exchange* (`channel.direct()`), który w parametrze przyjmuje nazwę exchange'a z initializera.
   - Dla exchange'a publikować przekazaną z initalizera wiadomość w formacie JSON, na odpowiedni routing_key. `.publish(message.to_json, routing_key: routing_key)`
   - Zamknąć połączenie `connection.close`
 
@@ -144,7 +144,7 @@ Stwórzmy zmienną, która będzie zawierała opcje połączenia:
   przykładowe wywołanie
 
   ```
-    from_queue 'twoja_nazwa_kolejki', exchange: 'twoja_nazwa_exchangea', exchange_type: :topic, routing_key: 'twoj_routing_key'
+    from_queue 'twoja_nazwa_kolejki', exchange: 'twoja_nazwa_exchangea', exchange_type: :direct, routing_key: 'twoj_routing_key'
   ```
 
 UWAGA! Tutaj chcemy wykorzystać **exchange** i **routing_key**, które wcześniej zdefiniowaliśmy w Producencie.
