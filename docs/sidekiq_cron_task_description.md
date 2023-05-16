@@ -81,7 +81,7 @@ Na potrzeby testów trochę "ponaciągamy" ramy czasowe. Żeby to zrobić, konie
 2. W metodzie `prepare_book_loan` kontrolera `BookLoansController` zmień ustawianą wartość atrybutu `due_date` "na za kilka minut", np. `due_date: Time.zone.now + 5.minutes)`.
 3. Wewnątrz Twojego `Job`a zmień w zapytaniu `where`(przed pętlą) ramy czasowe, o które odpytujemy bazę, np. `due_date: Time.zone.now..Time.zone.now + 4.minutes`.
 4. Zrestartuj aplikację i Sidekiqa.
-5. Wypożycz książkę. Po kilku minutach powinieneś otrzymać maila z przypomnieniem o zwrocie książki! Status kolejkowanych i wykonywanych zadań możesz śledzić w logach Sidekiqa. Jeżeli nie widzisz tam swojego `Job`a - coś jest nie tak. Jeżeli mail przyszedł - gratulacje! To koniec pierwszej części dzisiejszych warsztatów! :)
+5. Wypożycz książkę. Po kilku minutach powinieneś otrzymać maila z przypomnieniem o zwrocie książki! Status kolejkowanych i wykonywanych zadań możesz śledzić w logach Sidekiqa. Jeżeli po kilku minutach nie widzisz tam swojego `Job`a - coś jest nie tak. Jeżeli mail przyszedł - gratulacje! To koniec pierwszej części dzisiejszych warsztatów! :)
 
 ## Zadanie dodatkowe
 
