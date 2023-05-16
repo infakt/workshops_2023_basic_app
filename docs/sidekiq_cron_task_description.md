@@ -32,11 +32,11 @@ Pamiętaj u uruchomieniu Sidekiqa!
 Nawiązując do prezentacji - kolejkowanie zadań ma nam upraszczać życie i odciążać aplikację - wykonywać zadania nie wymagające priorytetu w adekwatnej chwili i ponawiać je w razie niedostępności partnera, problemów z wysyłką maila lub innych możliwych błędów.
 
 Kolejkowanie na dłuuugo do przodu nie jest dobrym pomysłem - chociażby dlatego, że z kolejką też może się "coś" stać.
-Lepszym rozwiązaniem jest cykliczne wykonywanie zadań, których wywołania możemy się spodziewać. To znaczy - nie oczekujemy, że wywołają się w związku z inną akcją. Wiemy, że i tak powinny się wykonać, że, tak jak w naszym wypadku, codziennie komuś będzie kończył się termin wypożyczenia. Dlatego niewarto "zapychać" kolejkę - lepiej regularnie weryfikować wypożyczenia i wtedy kolejkować powiadomienia (tutaj wiadomości email) krótkoterminowo.
+Lepszym rozwiązaniem jest cykliczne wykonywanie zadań, których wywołania możemy się spodziewać. To znaczy - nie oczekujemy, że wywołają się w związku z inną akcją. Wiemy, że i tak powinny się wykonać, że, tak jak w naszym wypadku, codziennie komuś będzie kończył się termin wypożyczenia. Dlatego niewarto "zapychać" kolejki - lepiej regularnie weryfikować wypożyczenia i wtedy kolejkować powiadomienia (tutaj wiadomości email) krótkoterminowo.
 
 ## Do dzieła!
 
-Zacznijmy od zmodyfikowania naszego `Job`a. Od teraz nie będzie on służył do wysyłki powiadomienia dla konkretnego obiektu wypożyczenia. Chcemy, żeby metoda `perform` iterowała (`BookLoan.where(...)`) po wszystkich aktywnych wypożyczeniach (`status: checked_out`), które kończą się jutro (`due_date: Date.tomorrow`).
+Zacznijmy od zmodyfikowania naszego `Job`a. Od teraz nie będzie on służył do wysyłki powiadomienia dla konkretnego obiektu wypożyczenia. Chcemy, żeby metoda `perform` iterowała (`BookLoan.where(...)`) po wszystkich aktywnych wypożyczeniach (`status: 'checked_out'`), które kończą się jutro (`due_date: Date.tomorrow`).
 
 Na znalezionym zbiorze użyj pętli `each`, a w niej wywołaj metodę mailera jako parametr podając aktualny element zbioru.
 
@@ -66,6 +66,6 @@ INFO: Cron Jobs - added job with name: due_date_notification
 Na potrzeby testów trochę "ponaciągamy" ramy czasowe:
 1. W pliku `schedule.yml` ustaw crona na wykonywanie się co 3 minuty - '*/3 * * * *'.
 2. W metodzie `prepare_book_loan` kontrolera `BookLoansController` zmień ustawianą wartość atrybutu `due_date` "na za kilka minut", np. `due_date: Time.zone.today + 5.minutes)`.
-3. Wewnątrz Twojego `Job`a zmień w zapytaniu `where`(przed pętlą) ramy czasowe, o które odpytujemy bazę, np. `due_date: Time.current..Time.current + 4.minutes`.
+3. Wewnątrz Twojego `Job`a zmień w zapytaniu `where`(przed pętlą) ramy czasowe, o które odpytujemy bazę, np. `due_date: Time.zone.now..Time.zone.now + 4.minutes`.
 4. Zrestartuj aplikację i Sidekiqa.
 5. Wypożycz książkę. Po kilku minutach powinieneś otrzymać maila z przypomnieniem o zwrocie książki! Status kolejkowanych i wykonywanych zadań możesz śledzić w logach Sidekiqa. Jeżeli nie widzisz tam swojego `Job`a - coś jest nie tak. Jeżeli mail przyszedł - gratulacje! To koniec pierwszej części dzisiejszych warsztatów! :)
