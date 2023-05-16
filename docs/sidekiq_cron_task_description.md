@@ -63,7 +63,7 @@ INFO: Cron Jobs - added job with name: due_date_notification
 
 ## Jak to przetestować?!?
 
-Na potrzeby testów trochę "ponaciągamy" ramy czasowe:
+Na potrzeby testów trochę "ponaciągamy" ramy czasowe. Żeby to zrobić, konieczna jest migracja typu danych (potrzebujemy MINUT). Instrukcja [tutaj](https://github.com/infakt/workshops_2023_basic_app/blob/main/docs/book_loan_duedate_datatype_migration.md):
 1. W pliku `schedule.yml` ustaw crona na wykonywanie się co 3 minuty - '*/3 * * * *'.
 2. W metodzie `prepare_book_loan` kontrolera `BookLoansController` zmień ustawianą wartość atrybutu `due_date` "na za kilka minut", np. `due_date: Time.zone.today + 5.minutes)`.
 3. Wewnątrz Twojego `Job`a zmień w zapytaniu `where`(przed pętlą) ramy czasowe, o które odpytujemy bazę, np. `due_date: Time.zone.now..Time.zone.now + 4.minutes`.
