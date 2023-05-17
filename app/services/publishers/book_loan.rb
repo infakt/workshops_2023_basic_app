@@ -8,7 +8,7 @@ module Publishers
       ::Publishers::Application.new(
         routing_key: 'basic_app.book_loans',
         exchange_name: 'basic_app',
-        message: { data: data }
+        message: data
       ).perform
     end
 

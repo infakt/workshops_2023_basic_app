@@ -10,7 +10,7 @@ module Publishers
 
     def perform
       channel = connection.create_channel
-      exchange = channel.topic(exchange_name, ack: true)
+      exchange = channel.direct(exchange_name)
       exchange.publish(message.to_json, routing_key: routing_key)
       connection.close
     end
@@ -31,10 +31,6 @@ module Publishers
         username: "guest",
         password: "guest"
       }
-    end
-
-    def channel
-      @channel ||= connection.create_channel
     end
   end
 end
