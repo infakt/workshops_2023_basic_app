@@ -1,6 +1,6 @@
 # Instalacja Redisa
 
-Do uruchomienia Sidekiqa, którego będziemy dzisiaj używać, potrzebujemy Redisa. Redis to specjalna baza danych przechowująca dane w pamięci RAM. Sidekiq używa go do przechowywania zadań i innych danych.
+Do uruchomienia Sidekiqa, którego będziemy dzisiaj używać, potrzebujemy Redisa. Redis to specjalna baza danych przechowująca dane w postaci par klucz-wartość, w pamięci RAM. Sidekiq używa go do przechowywania zadań i innych danych.
 
 ## MacOS
 
