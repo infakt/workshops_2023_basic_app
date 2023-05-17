@@ -103,9 +103,41 @@ end
 RSpec/ExampleLength:
   Exclude:
     - 'spec/features/**/*'
+
+RSpec/AnyInstance:
+  Enabled: false
 ```
 
 4. Test odpalamy standardową komendą testową: ```rspec spec/features/log_in_spec.rb```
+
+## Piewsze wyzwania
+
+W przypadku osób, które zrealiwoały zadanie związane z danymi pogodowymi mogą natrafić na pewne wyzwanie. Test nie będzie przechodził.
+Aby temu zapobiec potrzebujemy zamockować dane zwracające przez WeatherApi.
+
+```ruby
+(...)
+let(:weather_data) do
+    {
+      'location' => {
+        'name' => 'Cracow'
+      },
+      'current' => {
+        'condition' => {
+          'text' => 'Sunny',
+          'icon' => 'https://cdn.weatherapi.com/weather/64x64/day/113.png'
+        },
+        'temp_c' => 16
+      }
+    }
+  end
+
+  before do
+    allow_any_instance_of(WeatherApiConnector).to receive(:weather_data).and_return(weather_data) # mockujemy dane pogodowe
+    visit new_user_session_path # przed każdym testem odwiedzamy stronę logowania
+  end
+  (...)
+```
 
 ## Zadanie!
 Dopisz test poprawnego logowania
