@@ -148,7 +148,7 @@ Stwórzmy zmienną, która będzie zawierała opcje połączenia:
 
   Worker musi include'ować metody z `Sneakers::Worker`
 
-  Następnie definiujemy z jakiej kolejki Worker ma pobierać wiadomości
+  Następnie definiujemy z jakiej kolejki Worker ma pobierać wiadomości. Nazwę kolejki wymyślamy dowolnie. Warto żeby mówiła nam co będzie znajdowało się na tej kolejce.
 
   Korzystamy z metody `from_queue`. Jako argumenty przyjmuje ona:
 
@@ -160,10 +160,11 @@ Stwórzmy zmienną, która będzie zawierała opcje połączenia:
   przykładowe wywołanie
 
   ```
-    from_queue 'twoja_nazwa_kolejki', exchange: 'twoja_nazwa_exchangea', exchange_type: :direct, routing_key: 'twoj_routing_key'
+    from_queue 'basic_app_book_logs', exchange: 'basic_app', exchange_type: :direct, routing_key: 'basic_app.book_loans'
   ```
 
 UWAGA! Tutaj chcemy wykorzystać **exchange** i **routing_key**, które wcześniej zdefiniowaliśmy w Producencie.
+UWAGA 2! `from_queue` to metoda z biblioteki Sneakeres. Nie definiujemy jej od nowa.
 
 Czas na test!
 
@@ -195,16 +196,22 @@ Metod Powinna wyglądać to mniej więcej tak: (nazwa `work` jest konieczna!)
     binding.pry
   end
 ```
+Jeśli mamy włączony serwer sneakers wyłączamy go i uruchamiamy ponownie: `bundle exec rake sneakers:run`.
 
 Przechodzimy do Bilbioteki i wypożyczamy książkę. Z pozoru nic się nie wydarzyło, ale serwer Side_app powinen zatrzymać się na wykonaniu metody `work`. Wpisując `data` ( opieram się na nazwach z przykłądu wyżej) powinniśmy dostać nasz message.
 
-Jest on w formacje JSON. Aby zapisać dane potrzebujemy go sparsować do Hasha.
-
+Jest on w formacje JSON. Aby zapisać dane potrzebujemy go sparsować do Hasha. Użyjmy metody `JSON.parse()`.
+Przetestujmy wywołanie od razu w konsoli!
 Aby serwer zaczął działać dalej musimy zakończyć pracę debbugera. Wpisujemy 'next' lub kombinacje klawiszy CTRL+D.
 
-Wracamy do naszej metody. Usuwamy `pry`a do zmiennej przypisujemy sparsowany JSON.
 
-Na koniec tworzymy Log gdzie w parametrach przekazujemy `user_id` i wszystkie pozostałe dane.
+Wracamy do naszej metody. Usuwamy `pry`a do zmiennej przypisujemy sparsowany JSON.
+Na koniec tworzymy Log w bazie danych, gdzie w parametrach przekazujemy `user_id` i wszystkie pozostałe dane.
+
+Restartujemy serwer sneakers i uruchamiamy ponownie: `bundle exec rake sneakers:run`.
+
+
+I to koniec, po wypożyczeniu ksiażki w basic_app, powinenm nam się stworzyć log w side_app :)
 
 
 
@@ -212,8 +219,5 @@ Na koniec tworzymy Log gdzie w parametrach przekazujemy `user_id` i wszystkie po
 
   1. Wyniesienie do a9n(config/configuration.yml) opcji połączenie (connection_options) w base_app i side_app.
   2. Wysyłanie Logu o przerwaniu wypożyczenia. Ten sam exchange, ta sama kolejka inny routing key.
-  3. Pokazywanie w SideApp typu akcji na podstawie routing key. Potrzebna Migracja po stronie side_app lub dorzucenie klucza do `data`
-  4. Wystawienie końcówki API w SideApp, tak, żeby BasicApp mógł pobrać liste wszystkich wydarzeń dla uzytkownika
-
-  
-
+  3. Pokazywanie w SideApp typu akcji na podstawie routing key. Potrzebna Migracja po stronie side_app lub dorzucenie klucza do `data`.
+  4. Wystawienie końcówki API w SideApp, tak, żeby BasicApp mógł pobrać liste wszystkich wydarzeń dla użytkownika.
