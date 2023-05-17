@@ -26,7 +26,7 @@ Jeżeli korzystamy z innej biblioteki testowej dodany pakiet będzie inny, wszys
 ## Integracja z przeglądarką:
 Bez dodania poniższych rzeczy testy capybary będą działały, jednak nie będziemy mieli możliwości podglądu co aktualnie się wykonuje.
 
-1. Tworzymy plik specs/support/chromedriver.rb
+1. Tworzymy plik spec/support/chromedriver.rb
 
 ```ruby
 require 'selenium/webdriver'
@@ -58,13 +58,13 @@ end
 
 2. Dodajemy plik do naszego helpera:
 
-```require require 'support/chromedriver'```
+```require 'support/chromedriver'```
 
 ## Pora na pierwszy test!
 
 Jedną z funkcjonalności idealnych pod testy z użyciem Capybary będzie test poprawnego logowania, zatem do dzieła!
 
-1. Dodajemy nowy katalog /specs/features
+1. Dodajemy nowy katalog /spec/features
 
 2. W utworzonym katalogu dodajemy plik ```log_in_spec.rb```
 Listę podstawowych akcji znajdziecie tutaj: https://gist.github.com/alexbrinkman/cc4bc502b06bf08bd079
@@ -97,6 +97,15 @@ describe 'Log in', type: :feature do
   end
 end
 ```
+
+3. Z racji tego, ze akcje wykonujemy w bloku it, aby uspokoić rubocopa dodajemy do pliku ```.rubocop.yml```
+```yml
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/features/**/*'
+```
+
+4. Test odpalamy standardową komendą testową: ```rspec spec/features/log_in_spec.rb```
 
 ## Zadanie!
 Dopisz test poprawnego logowania
