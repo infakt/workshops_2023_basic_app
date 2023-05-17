@@ -3,6 +3,7 @@
 ## Po co to wszystko?
 
 Capybara jest jednym z narzędzi do testowania interfejsu użytkownika w aplikacjach opartych na Ruby on Rails. Capybara umożliwia pisanie testów, które symulują interakcje użytkownika z aplikacją, takie jak kliknięcia, wypełnianie formularzy czy nawigację po stronach. Dzięki Capybarze można testować zachowanie aplikacji na różnych poziomach, od prostych testów jednostkowych po bardziej zaawansowane testy integracyjne.
+
 Tutaj koniec teorii, więcej na prezentacji.
 
 ## Potrzebne gemy:
@@ -16,15 +17,16 @@ Po dodaniu do gemfila odpalamy ```bundle install```
 
 ## Dodanie potrzebnych bibliotek
 
-Aby móc korzystać z funkcji capybary musimy je dodać do pliku ```rails_helper.rb``` lub ```spec_helper.rb``` w zalezności od tego co załączamy do plików testowych.
+Aby móc korzystać z funkcji capybary musimy je dodać do pliku ```rails_helper.rb``` lub ```spec_helper.rb``` w zależności od tego którego używamy w plikach testowych.
 
-W wyzej wymienionym pliku dodajemy ```require 'capybara/rspec'```
-Jezeli korzystamy z innej biblioteki testowej dodany pakiet będzie inny, wszyskie dostępne opcje znajdują się https://github.com/teamcapybara/capybara
+W wyżej wymienionym pliku dodajemy ```require 'capybara/rspec'```
+
+Jeżeli korzystamy z innej biblioteki testowej dodany pakiet będzie inny, wszystkie dostępne opcje znajdują się tutaj: https://github.com/teamcapybara/capybara
 
 ## Integracja z przeglądarką:
-Bez dodania ponizszych rzeczy testy capybary będą działały, jednak nie będziemy mieli mozliwości podglądu co aktualnie się wykonuje.
+Bez dodania poniższych rzeczy testy capybary będą działały, jednak nie będziemy mieli możliwości podglądu co aktualnie się wykonuje.
 
-dodajemy plik specs/support/chromedriver.rb
+1. Tworzymy plik specs/support/chromedriver.rb
 
 ```ruby
 require 'selenium/webdriver'
@@ -54,13 +56,13 @@ end
 
 ```
 
-następnie dodajemy plik do naszego helpera:
+2. Dodajemy plik do naszego helpera:
 
 ```require require 'support/chromedriver'```
 
 ## Pora na pierwszy test!
 
-Jedną z funkcjonalności idealnych pod testy z uzyciem Capybary będzie test poprawnego logowania, zatem do dzieła!
+Jedną z funkcjonalności idealnych pod testy z użyciem Capybary będzie test poprawnego logowania, zatem do dzieła!
 
 1. Dodajemy nowy katalog /specs/features
 
@@ -83,7 +85,7 @@ describe 'Log in', type: :feature do
     let(:email) { 'not_existing@email.com' }
     let(:password) { 'password' }
 
-    it 'displays error message' do # wszyskie capybarowe akcje wykonujemy w bloku it
+    it 'displays error message' do # wszystkie capybarowe akcje wykonujemy w bloku it
       within '#new_user' do
         fill_in 'user_email',	with: email
         fill_in 'user_password',	with: password
@@ -107,5 +109,5 @@ context 'when user is registered' do
 
       expect(page).to have_content('Signed in successfully.')
     end
-  end
+end
 ```
