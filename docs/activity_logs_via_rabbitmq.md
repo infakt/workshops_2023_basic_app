@@ -19,9 +19,9 @@ https://github.com/infakt/workshops_2023_basic_app/blob/main/docs/install-rabbit
 
 ## Bunny - producent wiadomości
 
-1. Do wysyłania zdarzeń do kolejki użyjemy gemu `bunny`. Dodajemy go do naszego Gemfile: `gem 'bunny'` i uruchamiamy `bundle`.
+1. Do wysyłania zdarzeń do kolejki użyjemy gemu `bunny` -> `https://github.com/ruby-amqp/bunny`. Dodajemy go do naszego Gemfile: `gem 'bunny'` i uruchamiamy `bundle`.
 2. Aby wysłać wiadomość, potrzebujemy najpierw połączyć się z RabbitMQ. W tym celu stworzymy nowy serwis.
-Nazwijmy go `Publishers::Application`. Powinien on być inicializowany trzema parametrami:
+Nazwijmy go `Application` i umieśćmy go w module `Publishers` -> `app/services/publishers/application.rb`. Powinien on być inicializowany trzema parametrami:
   - treścią wiadomości (to co będziemy chcieli przekazać do drugiej apki)
   - nazwą exchange'a
   - kluczem (routing_key). 
@@ -42,16 +42,32 @@ Nazwijmy go `Publishers::Application`. Powinien on być inicializowany trzema pa
       }
     ```
    - *connection* -> Aby móc przesyłać wiadomości do naszego brokera musimy zdefiniować połączenie z nim
-   przekazując odpowiednie opcje: `Bunny.new(connection_options)`
+   przekazując odpowiednie opcje: `Bunny.new(connection_options)`. Pamiętajmy o memoizacji (`@connection ||=`), inaczej za każdym wywołaniem metody będziemy tworzyć kolejne połączenie, co może wywołać błąd
 
 4. Główna metoda (publiczna )tego serwisu, z której będziemy korzystać powinna:
-  - startować (`.start`) *połączenie*,
+  - startować połączenie(`connection.start`),
   - Tworzyć *kanał* (`connection.create_channel`)
   - Tworzyć bezpośredni *exchange* (`channel.direct()`), który w parametrze przyjmuje nazwę exchange'a z initializera.
   - Dla exchange'a publikować przekazaną z initalizera wiadomość w formacie JSON, na odpowiedni routing_key. `.publish(message.to_json, routing_key: routing_key)`
   - Zamknąć połączenie `connection.close`
 
-4. A teraz KONKRETY! Chcielibyśmy logować informacje dotyczące wypożyczenia książki. W tym celu stworzymy nowy publisher `Publishers::LoanBook` w katalogu `/services`.
+  (przydatny link, `https://www.rabbitmq.com/tutorials/tutorial-one-ruby.html`)
+
+
+Na tym etapie możemy sprawdzić czy poprawnie łączymy się z rabitem. W consoli railsowej możemy zawołać:
+
+```
+::Publishers::Application.new(
+     routing_key: 'testowy_routing_key',
+     exchange_name: 'testowy_exchange',
+     message: { test: 'test' }
+).perform
+```
+
+W consoli powinniśmy dostać true, a w panelu na `http://localhost:15672/#/exchanges` powinen pojawić się `testowy_exchange`.
+
+
+5. A teraz KONKRETY! Chcielibyśmy logować informacje dotyczące wypożyczenia książki. W tym celu stworzymy nowy publisher `Publishers::LoanBookPublisher` w katalogu `/services`.
   - publisher przyjmuje w initializerze treść wiadomości.
   - powinen mieć metodę która wykorzystuje nasz `Publishers::Application.new(...`.
   - `Publishers::Application` będzie potrzebował do poprawnego wykonania, 
@@ -66,12 +82,12 @@ Nazwijmy go `Publishers::Application`. Powinien on być inicializowany trzema pa
     ::Publishers::Application.new(
       routing_key: 'basic_app.book_loans',
       exchange_name: 'basic_app',
-      message: { data: data }
+      message: { message }
     ).perform
   end
 ```
 
-5. Ostatnim krokiem jest wpięcie naszego Publishera LoanBook w odpowiednie miejsce w kontrolerze i przekazanie danych.
+6. Ostatnim krokiem jest wpięcie naszego LoanBookPublishera w odpowiednie miejsce w kontrolerze i przekazanie danych.
   Publikowanie logu warto wpiąć w miejsce, gdzie wiemy, że nasze wypożyczenie na pewno zapisało się do bazy.
 
   Jeśli chodzi o dane to przesyłajmy do Publishera wszystkie dotyczące wypożczenia. Wykorzystamy metodę `.attributes`.
@@ -79,7 +95,7 @@ Nazwijmy go `Publishers::Application`. Powinien on być inicializowany trzema pa
 
 Aby sprawdzić, czy poprawnie działa nam cały kod dotychczasowy kod.
 Wypożyczamy książke, wchodzimy na `http://localhost:15672/#/exchanges`, tam powinen być stworzony exchange o nazwie,
-którą zdefiniowaliśmy w publisherze LoanBook
+którą zdefiniowaliśmy w LoanBookPublisherze
 
 
 ## Etap II - Side APP
@@ -88,7 +104,7 @@ którą zdefiniowaliśmy w publisherze LoanBook
 
 Aby przyśpieszyć trochę pracę przygotowałem Aplikację, której zadaniem będzie odbieranie logów.
 
-1. Klonujemy repozytorium z `https://github.com/infakt/workshops_2023_side_app`
+1. Forkujemy repozytorium z `https://github.com/infakt/workshops_2023_side_app`
 2. Instalujemy gemy: `bundle install`
 3. Setupujemy bazę: `rake db:setup`
 4. Uruchamiamy server: `rails server`
