@@ -18,7 +18,7 @@ Po stworzeniu tych trzech rzeczy możesz przejść do wywołania - instrukcja da
 
 Przygotowaną wiadomość wyślemy, zgodnie z założeniem, dzień przed terminem zwrotu książki. Możemy zrobić to, wywołując w `BookLoansController`(tak jak wcześniej) `Job`a, natomiast tym razem, zamiast metody `perform_async` użyjemy `perform_at`.
 
-Jako parametr do metody `perform_at` należy podać jakiś interwał, np. obiekt klasy `Time` lub `DateTime`. W naszym wypadku może być to atrybut `due_date` obiektu wypożyczenia. Jednakże, przypomnienie ma być wysłane na dzień przed terminem zwrotu. Powinniśmy do `perform_at` podać odpowiednio "obrobioną" wartość.
+Jako parametr do metody `perform_at` należy podać, np. obiekt klasy `Date`, `Time` lub `DateTime` (może być to też jakiś interwał, np. `5.minutes`). W naszym wypadku może być to atrybut `due_date` obiektu wypożyczenia. Jednakże, przypomnienie ma być wysłane na dzień przed terminem zwrotu. Powinniśmy do `perform_at` podać odpowiednio "obrobioną" wartość.
 
 W ten sposób kolejkujemy zadanie wysyłające wiadomość na określony, pożądany przez nas dzień.
 
@@ -26,6 +26,8 @@ Przetestuj działanie `Job`a w konsoli -  `rails c` i ręczne wywołanie:
 ```
 DueDateNotificationJob.perform_in(10.seconds, BookLoan.last.id)
 ```
+
+`perform_at` i `perform_in` to tożsame metody - jedna jest aliasem drugiej. Używamy ich zamiennie dla wygody, w zależności od typu podawanego przez nas argumentu - `perform_in(5.minutes)`, `perform_at(Date.tomorrow)`.
 
 Podobnie należy wywołać `Job` w kontrolerze (tam gdzie poprzedni przykład). Używamy `perform_at` i jako pierwszy argument podajemy datę, a drugi - `id` wypożyczenia.
 
