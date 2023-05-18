@@ -28,7 +28,10 @@ class BookLoansController < ApplicationController
   delegate :book, to: :@book_loan
 
   def prepare_book_loan
-    @book_loan = current_user.book_loans.new(book_id: book_loan_params, due_date: Time.zone.today + 14.days)
+    # for notification testing purposes
+    # @book_loan = current_user.book_loans.new(book_id: book_loan_params, due_date: Time.current + 5.minutes)
+
+    @book_loan = current_user.book_loans.new(book_id: book_loan_params, due_date: Time.current + 14.days)
   end
 
   def set_book_loan

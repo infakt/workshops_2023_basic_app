@@ -1,0 +1,5 @@
+due_date_notification:
+  # for notification testing purposes
+  # cron: '*/5 * * * *'
+  cron: '0 8 * * *'
+  class: 'DueDateNotificationsJob'
