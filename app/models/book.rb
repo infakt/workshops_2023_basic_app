@@ -8,6 +8,8 @@ class Book < ApplicationRecord
   has_many :book_loans, dependent: :destroy
   has_many :book_reservations, dependent: :destroy
 
+  after_destroy_commit -> { broadcast_remove_to :books }
+
   def ongoing_loan
     book_loans.checked_out.last
   end
