@@ -29,6 +29,9 @@ gem 'hotwire-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
 
+gem 'kaminari', '~> 1.2.2'
+gem 'bootstrap5-kaminari-views'
+
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
 
