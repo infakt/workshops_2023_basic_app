@@ -58,7 +58,7 @@ end
 
 ```
 
-[integracja z firefoxem](https://medium.com/@ethanryan/testing-your-app-in-the-browser-with-capybara-rails-backend-react-frontend-e409671c4596)
+[integracja z firefoxem](https://www.lambdatest.com/automation-testing-advisor/ruby/methods/capybara_ruby.Capybara.SpecHelper.firefox)
 
 2. Dodajemy plik do naszego helpera:
 
