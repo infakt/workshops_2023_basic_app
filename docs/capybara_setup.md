@@ -8,6 +8,8 @@ Tutaj koniec teorii, więcej na prezentacji.
 
 ## Potrzebne gemy:
 
+Gemy warto umieścić w grupie ```:test``` lub ```:development```
+
 ```ruby
   gem 'capybara'
   gem 'selenium-webdriver'
@@ -55,6 +57,8 @@ Capybara.configure do |config|
 end
 
 ```
+
+[integracja z firefoxem](https://medium.com/@ethanryan/testing-your-app-in-the-browser-with-capybara-rails-backend-react-frontend-e409671c4596)
 
 2. Dodajemy plik do naszego helpera:
 
