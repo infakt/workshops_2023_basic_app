@@ -6,7 +6,8 @@ module ApplicationHelper
       'Reserve (book is already loaned)',
       book_reservations_path(book_id: book.id),
       method: :post,
-      class: "btn #{css_class}"
+      class: "btn #{css_class}",
+      data: { turbo: false }
     )
   end
 
@@ -17,7 +18,8 @@ module ApplicationHelper
       'Loan',
       book_loans_path(book_id: book.id),
       method: :post,
-      class: "btn #{css_class}"
+      class: "btn #{css_class}",
+      data: { turbo: false }
     )
   end
 end
