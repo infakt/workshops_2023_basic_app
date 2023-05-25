@@ -31,7 +31,7 @@
       <div class="form-group">
         <%= form.label :page_count %>
         <%= form.number_field :page_count, class: 'form-control' %>
-        <%= link_to 'Cancel', book_path(book), class: 'inline-action' if book %>
+        <%= link_to 'Cancel', book_path(book), class: 'inline-action' if book.persisted? %>
         <%= form.button 'Save', class: 'inline-action' %>
       </div>
     <% end %>
