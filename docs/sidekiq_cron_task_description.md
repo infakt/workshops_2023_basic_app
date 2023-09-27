@@ -18,7 +18,7 @@ Po stworzeniu tych trzech rzeczy możesz przejść do wywołania - instrukcja da
 
 Przygotowaną wiadomość wyślemy, zgodnie z założeniem, dzień przed terminem zwrotu książki. Możemy zrobić to, wywołując w `BookLoansController`(tak jak wcześniej) `Job`a, natomiast tym razem, zamiast metody `perform_async` użyjemy `perform_at`.
 
-Jako parametr do metody `perform_at` należy podać jakiś interwał, np. obiekt klasy `Time` lub `DateTime`. W naszym wypadku może być to atrybut `due_date` obiektu wypożyczenia. Jednakże, przypomnienie ma być wysłane na dzień przed terminem zwrotu. Powinniśmy do `perform_at` podać odpowiednio "obrobioną" wartość.
+Jako parametr do metody `perform_at` należy podać np. obiekt klasy `Time` lub `DateTime`. W naszym wypadku może być to atrybut `due_date` obiektu wypożyczenia. Jednakże, przypomnienie ma być wysłane na dzień przed terminem zwrotu. Powinniśmy do `perform_at` podać odpowiednio "obrobioną" wartość.
 
 W ten sposób kolejkujemy zadanie wysyłające wiadomość na określony, pożądany przez nas dzień.
 
