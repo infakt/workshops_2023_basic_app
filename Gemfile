@@ -5,6 +5,7 @@ ruby '3.2.1'
 
 gem 'bootsnap', require: false
 gem 'bootstrap'
+gem 'a9n'
 gem 'devise'
 gem 'importmap-rails'
 gem 'jbuilder'

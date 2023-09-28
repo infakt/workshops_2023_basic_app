@@ -18,5 +18,8 @@ module Workshops2023BasicApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    A9n.root = File.expand_path('..', __dir__)
+    A9n.load
   end
 end
