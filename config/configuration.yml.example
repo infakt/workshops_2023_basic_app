@@ -1,0 +1,4 @@
+defaults:
+  google_client_id: '__your_client_id__'
+  google_client_secret: '__your_client_secret__'
+  app_host: 'http://localhost:3000'
