@@ -8,7 +8,7 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
 
 ## Dwa etapy zadania
 
-1. Założymy konto w serwisie dostarczający API z danymi o pogodzie i uzyskamy klucz API.
+1. Założymy konto w serwisie dostarczającym API z danymi o pogodzie i uzyskamy klucz API.
 2. Dokonamy zmiany w aplikacji, aby odpowiednio pozyskać dane i wyświetlić je w aplikacji.
 
 ## Działamy!
@@ -38,7 +38,7 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
     A9n.root = File.expand_path('..', __dir__)
     A9n.load
     ```
- - tworzymy plik `config/configuration.yml.example`, w którym dodajemy nasz klucz, ale... aby nie był on publicznie dostępny wskazujemy tu jedynie, że to jest miejsce na ten klucz
+ - w katalogu `config` tworzymy plik `configuration.yml.example`, w którym dodajemy nasz klucz, ale... aby nie był on publicznie dostępny wskazujemy tu jedynie, że to jest miejsce na ten klucz
     ```
     defaults:
       weather_api_key: '__your_api_key__'
@@ -50,7 +50,7 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
     ```
 
 4. Tworzymy serwis, który bedzie nam pobierał komplet bieżących danych pogodowych `app/services/weather_api_connector.rb`.
-5. Tu przykładowy artykuł listujący metody tworzenia requestów do API https://www.twilio.com/blog/5-ways-make-http-requests-ruby, skorzystamy z tej pierwszej.
+5. Tu przykładowy artykuł listujący metody tworzenia requestów do API https://www.twilio.com/blog/5-ways-make-http-requests-ruby, skorzystamy z tej pierwszej, dlatego nalezy pamiętać o dodaniu w serwisie tworzącym klienta api zapisu `require 'net/http'`.
 6. Wartości przekazujące klucz API oraz lokalizację zapisujemy do stałych, jeśli chodzi o lokalizację to dla uproszczenia przyjmujemy, że pobieramy dane dla Krakowa:
 ```
 API_KEY = A9n.weather_api_key
@@ -73,6 +73,7 @@ Przy okazji pomoże nam to przygotować się do "wyłuskania" potrzebnych danych
 
 8. Aby ładnie zaprezentować nasze dane pogodowe i tylko te, które sobie zaplanowaliśmy korzystamy z nowej warstwy abstrakcji i tworzymy presenter `app/presenters/weather_presenter.rb`.
 9. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymy metody:
+ - initializer przyjmujący zmienną `data`, czyli nasze dane z odpowiedzi punktu api
  - wyciągające określone dane z całego zestawu: `description`, `temperature`, `icon`
  - w dokumentacji możemy znaleźć zestaw wszystkich możliwych danych opisowych, jakie możemy otrzymać w zwrotce, po ich przejrzeniu można ustalić, ze ładna pogoda jest gdy:
 ```
@@ -98,7 +99,7 @@ end
 ```
 
 Jak sprawdzić czy dobrze działa nasz presenter?
-W konsoli zapisz sobie pod zmienną wywołanie presentera, np. `presenter = WeatherPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
+W konsoli zapisz sobie pod zmienną dane z odpowdzi api pogodowego `data = WeatherApiConnector.new.weather_data` oraz wywołanie presentera, np. `presenter = WeatherPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
 Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak należy poprawiamy.
 
 10. Aby metody z naszego presentera były dostępne w całej aplikacji dodajemy odpowiednie metody w `app/helpers/application_helper.rb`, dzięki temu będą one dostępne globalnie:
