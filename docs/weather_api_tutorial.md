@@ -68,11 +68,11 @@ def weather_data
 end
 ```
 Jak sprawdzić czy do tego miejsca działamy prawidłowo?
-Spróbuj w konsoli wywolać metodę `weather_data` z naszego serwisu, czyli `WeatherApiConnector.new.weather_data`, powinna nam ona zwrócić komplet danych z api pogodowego. 
+Spróbuj w konsoli wywołać metodę `weather_data` z naszego serwisu, czyli `WeatherApiConnector.new.weather_data`, powinna nam ona zwrócić komplet danych z api pogodowego. 
 Przy okazji pomoże nam to przygotować się do "wyłuskania" potrzebnych danych w kolejnym kroku.
 
 8. Aby ładnie zaprezentować nasze dane pogodowe i tylko te, które sobie zaplanowaliśmy korzystamy z nowej warstwy abstrakcji i tworzymy presenter `app/presenters/weather_presenter.rb`.
-9. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymu metody:
+9. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymy metody:
  - wyciągające określone dane z całego zestawu: `description`, `temperature`, `icon`
  - w dokumentacji możemy znaleźć zestaw wszystkich możliwych danych opisowych, jakie możemy otrzymać w zwrotce, po ich przejrzeniu można ustalić, ze ładna pogoda jest gdy:
 ```
@@ -113,13 +113,13 @@ Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak nale
 ```
 
 11. Tworzymy plik widoku, partial `app/views/weather/_show.html.erb`, w którym możemy bazować na metodach z naszego presentera, aby zdynamizować wyświetlane treści. Ponieważ dostęp do presentera zapięliśmy tak "wysoko" jak się da, odwołanie do jego metod na widoku bedzie odbywać się w taki sposób `<%= weather_presenter.description %>`.
-12. Plik ten musimy wywołać w głównym layoucie aplikacji, z racji, że chcemy, aby element ten wyświetlał się na każdej ze stron, dodajemy więc do `app/views/layouts/application.html.erb` dodatkowy div, w którym bedziemy renderować nasz widok pogody (dodajemy nasz div prze zamknięciem znacznika nav):
+12. Plik ten musimy wywołać w głównym layoucie aplikacji, z racji, że chcemy, aby element ten wyświetlał się na każdej ze stron, dodajemy więc do `app/views/layouts/application.html.erb` dodatkowy div, w którym bedziemy renderować nasz widok pogody (dodajemy nasz div przed zamknięciem znacznika nav):
 ```
 <div class="container">
   <%= render partial: "weather/show" %>
 </div>
 ```
-13. Dla dopracowania finalnego efektu wizualnego, ułożenia naszego elementu pogodowego mozemy podziałać ze stylami bootstrapa, tutaj dokumentacja https://getbootstrap.com/docs/3.4/css/.
+13. Dla dopracowania finalnego efektu wizualnego, ułożenia naszego elementu pogodowego możemy podziałać ze stylami bootstrapa, tutaj dokumentacja https://getbootstrap.com/docs/3.4/css/.
 14. Jeśli jako efekt końcowy widzisz bieżące dane pogodowe wraz z tekstem zachęcającym do czytania to właśnie udało Ci się zakończyć pierwsze zadanie.
 Całość powinna się prezentować tak:
 
