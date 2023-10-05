@@ -6,7 +6,7 @@ Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta
 
 ## Dwa etapy zadania
 
-1. Umożliwienie logowania się w aplikacja za pomocą konta Google.
+1. Umożliwienie logowania się w aplikacji za pomocą konta Google.
 2. Utworzenie eventu w kalendarzu Google zalogowanego użytkownika:
  - event pojawia się w kalendarzu tuż po akcji wypożyczenia książki,
  - event widoczny jest w kalendarzu w dacie sugerowanego terminu oddania książki, umownie ustalamy to na dwa tygodnie od daty wypożyczenia.
@@ -27,7 +27,7 @@ Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta
   <li>Wchodzimy z lewego menu w "Ekran zgody OAuth" i zaznaczamy User Type jako "zewnętrzny" i klikamy "Utwórz".</li>
   <li>W kolejnym kroku wypełniamy nazwę aplikacji jako "workshops_2023_basic_app", adres email dla użytkowników potrzebujacych pomocy (Twój email konta, które przeznaczyłeś do pracy z projektem), logo zostawiamy puste, w polu "Strona główna aplikacji" wstawiamy "http://localhost:3000/users/sign_in", pozostałe linki zostawiamy puste. Wypełniamy jeszcze nasz email w polu „Dane kontaktowe deweplopera i klikamy "Zapisz i kontynuuj".</li>
   <li>Zostaniemy przeniesieni do kroku "Zakresy", nic tu nie zmieniamy i klikamy "Zapisz i kontynuuj".</li>
-  <li>Zostaniemy przeniesieni do kroku "Użytkownicy testowi", gdzie klikając na "Add users" dodajemy adresy email naszych kont testowych. Po ich dodaniu klikamy „Zapisz i kontynuuj”.</li>
+  <li>Zostaniemy przeniesieni do kroku "Użytkownicy testowi", gdzie klikając na "Add users" dodajemy adresy email naszych kont testowych (tych utworzonych do celu wczesniej lub naszych "starych" kont google, które zamierzamy wykorzystać do tego celu). Po ich dodaniu klikamy „Zapisz i kontynuuj”.</li>
   <li>Zostaniemy przeniesieni na stronę z podsumowaniem, gdzie w razie pomyłki możemy wyedytować dane. Klikamy "Powrót do panelu".</li>
   <li>Z bocznego panelu przechodzimy do sekcji "Dane logowania" i klikamy "Utwórz dane logowania" gdzie wybieramy "Identyfikator klienta OAuth".</li>
   <li>W polu "Typ aplikacji" wybieramy "Aplikacja internetowa", w polu "Nazwa" wpisujemy "Warsztaty inFakt 2023", w sekcji "Autoryzowane indetyfikatory URI przekierowania" klikamy button "Dodaj URI" i podajemy tam adres "http://localhost:3000/users/auth/google_oauth2/callback", zatwierdzamy klikając button "Utwórz".</li>
@@ -40,7 +40,7 @@ Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta
 `gem 'omniauth-google-oauth2'` - realizuje autentykację z kontem Google z wykorzystaniem OAuth2
 `gem 'omniauth-rails_csrf_protection'` - dla zabezpieczenia podatności bezpieczeństwa (do poczytania tu https://github.com/cookpad/omniauth-rails_csrf_protection)
 i uruchamiamy `bundle`
-7. W pliku `config/configuration.yml.example` dodajemy nowe klucze:
+7. W katalogu `config` tworzymy plik `configuration.yml.example` dodajemy w nim nowe klucze:
 
 ```
 defaults:
@@ -48,7 +48,7 @@ defaults:
   google_client_secret: '__your_client_secret__'
   app_host: 'http://localhost:3000'
 ```
-a w pliku `config/configuration.yml` zapisujemy nasze prawdziwe dane.
+a w pliku `config/configuration.yml` zapisujemy nasze prawdziwe dane, czyli te, które wygenerowaliśmy w panelu developerskim google w krokach wyzej.
 
 8. Postępujemy zgodnie z instrukcją dla gema https://github.com/zquestz/omniauth-google-oauth2 i dodajemy odpowiednie zmiany w aplikacji (uwaga: uwzględniamy różnice w konfiguracji w przypadku, gdy korzystamy z Devise'a, a u nas korzystamy):
  - w initializerze `config/initializers/devise.rb` dodajemy zapis: `config.omniauth :google_oauth2, A9n.google_client_id, A9n.google_client_secret, {}`
