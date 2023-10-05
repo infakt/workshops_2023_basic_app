@@ -31,10 +31,10 @@ Chcemy, aby w naszej aplikacji użytkownik mógł logować się za pomocą konta
   <li>Zostaniemy przeniesieni na stronę z podsumowaniem, gdzie w razie pomyłki możemy wyedytować dane. Klikamy "Powrót do panelu".</li>
   <li>Z bocznego panelu przechodzimy do sekcji "Dane logowania" i klikamy "Utwórz dane logowania" gdzie wybieramy "Identyfikator klienta OAuth".</li>
   <li>W polu "Typ aplikacji" wybieramy "Aplikacja internetowa", w polu "Nazwa" wpisujemy "Warsztaty inFakt 2023", w sekcji "Autoryzowane indetyfikatory URI przekierowania" klikamy button "Dodaj URI" i podajemy tam adres "http://localhost:3000/users/auth/google_oauth2/callback", zatwierdzamy klikając button "Utwórz".</li>
-  <li>Pojawi się nam popup z potwierdzeniem, że "Klient OAuth został utworzony" oraz z danymi logowania. Będą nam one potrzebne w konfiguracji projektu więc należy je zapisać, można żyć opcji "Pobierz JSON".</li>
+  <li>Pojawi się nam popup z potwierdzeniem, że "Klient OAuth został utworzony" oraz z danymi logowania. Będą nam one potrzebne w konfiguracji projektu więc należy je zapisać, można użyć opcji "Pobierz JSON".</li>
 </ul>
 
-4. Mamy juz wszystkie potrzebne credentiale więc zaczynamy pracę z kodem. Wychodzimy z głównego brancha `main` i tworzymy nowy branch dla tych zmian.
+4. Mamy już wszystkie potrzebne credentiale więc zaczynamy pracę z kodem. Wychodzimy z głównego brancha `main` i tworzymy nowy branch dla tych zmian.
 5. Jeśli działasz na branchu, na którym nie masz dodanego gemu A9n to dodaj go analogicznie jak w zadaniu o API pogodowym. Przyda się do bezpiecznego zapisania naszych danych autoryzujących. Pamiętaj o dodaniu zmian w `.gitignore` dla pliku `config/configuration.yml`
 6. Zaczynamy od dodania dwóch gemów:
 `gem 'omniauth-google-oauth2'` - realizuje autentykację z kontem Google z wykorzystaniem OAuth2
@@ -50,7 +50,7 @@ defaults:
 ```
 a w pliku `config/configuration.yml` zapisujemy nasze prawdziwe dane.
 
-8. Postępujemy zgodnie z instrukcją dla gema https://github.com/zquestz/omniauth-google-oauth2 i dodajemy odpowiednie zmiany w aplikacji (uwaga: uwzględniamy róznice w konfiguracji w przypadku, gdy korzystamy z Devise'a, a u nas korzystamy):
+8. Postępujemy zgodnie z instrukcją dla gema https://github.com/zquestz/omniauth-google-oauth2 i dodajemy odpowiednie zmiany w aplikacji (uwaga: uwzględniamy różnice w konfiguracji w przypadku, gdy korzystamy z Devise'a, a u nas korzystamy):
  - w initializerze `config/initializers/devise.rb` dodajemy zapis: `config.omniauth :google_oauth2, A9n.google_client_id, A9n.google_client_secret, {}`
  - definiujemy ścieżkę dla callbacków w `config/routes.rb` (aktualizujemy aktualny wiersz z `devise_for :users` a nie dodajemy nowego): `devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }`
  - w modelu `User` powiązujemy lub tworzymy usera:
@@ -110,7 +110,7 @@ na
  - bedziemy go potem mogli podejrzeć w sekcji "Włączone interfejsy API..." (ang: Enabled APIs & services)
 2. Dokumentacja API kalendarza Google znajduje się tu https://developers.google.com/calendar/api/v3/reference?hl=pl
 3. Zanim zaczniemy modyfikować kod i testować zmiany dobrze jest usunąc lokalnie z konsoli usera z naszym adresem email, którym testowaliśmy logowanie przez kontro Google.
-Ponieważ nie ma on ustawionego tokena i refresh_tokena pojawi nam się błąd w dalszych etapach. Moglibyśmy podjąc się uzupełnienia tych danych, ale na tym etapie upraszczamy działanie, aby móc skupic sie na kontynuacji zadania.
+Ponieważ nie ma on ustawionego tokena i refresh_tokena pojawi nam się błąd w dalszych etapach. Moglibyśmy podjąć się uzupełnienia tych danych, ale na tym etapie upraszczamy działanie, aby móc skupić się na kontynuacji zadania.
 Uruchamiamy zatem konsolę `rails c` i znajdujemy naszego usera `user = User.find_by(email: ...)` i usuwamy go `user.destroy`.
 Upewniamy się, że jesteśmy na branchu dla tego zadania i dalej działamy z kodem.
 4. Dodajemy gema w Gemfile ułatwiającego korzystanie z Google Calendar API i uruchamimy `bundle`:
@@ -238,7 +238,7 @@ Tu link, jeśli potrzebujesz na szybko przyswoic temat obsługi wyjątków https
 Ok! Na tym etapie mamy gotowego klienta do komunikacji!
 Sprawdzmy sobie w konsoli: `UserCalendarNotifier.new(User.last, Book.last).google_calendar_client`
 
-Możemy też sprawdzic, czy jesteśmy w stanie naszym klientem pobrać listę kalendarzy: 
+Możemy też sprawdzić, czy jesteśmy w stanie naszym klientem pobrać listę kalendarzy: 
 `UserCalendarNotifier.new(User.last, Book.last).send(:google_calendar_client).get_calendar('primary')`
 <strong>Uwaga</strong> - jeżeli dostajesz błąd unauthorized - upewnij się, że dla danego usera, na którym testujesz w konsoli masz aktywną sesję w przeglądarce (do komunikacji z API Google Calendar wykorzystujemy token, ktory mógł wygasnąć!)
 ```
@@ -247,7 +247,7 @@ Error - #<Google::Apis::AuthorizationError: Unauthorized status_code: 401
 ```
 
 13. Ok! Wiemy już ze potrafimy nawiązać połączenie z API kalendarza, dla naszego konkretnego usera;
-Spróbujmy teraz dodać metodę która dodaje event w kalendarzu.
+Spróbujmy teraz dodać metodę, która dodaje event w kalendarzu.
 
 Musimy sobie przygotować dane opisujące ten event - wydzielmy to do osobnej metody, określając też “za dwa tygodnie”, również w osobnej metodzie
 Protip: używamy memoizacji, żeby “now” nie zwrociło nam przy każdym wywołaniu innej daty i godziny:
