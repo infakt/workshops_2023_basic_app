@@ -222,7 +222,7 @@ Tu link, jeśli potrzebujesz na szybko przyswoic temat obsługi wyjątków https
 12. Finalna postać klienta:
 
 ```ruby
-  def google_calendar_client(user)
+  def google_calendar_client
     client = Google::Apis::CalendarV3::CalendarService.new
 
     begin
@@ -239,7 +239,7 @@ Ok! Na tym etapie mamy gotowego klienta do komunikacji!
 Sprawdzmy sobie w konsoli: `UserCalendarNotifier.new(User.last, Book.last).google_calendar_client`
 
 Możemy też sprawdzić, czy jesteśmy w stanie naszym klientem pobrać listę kalendarzy: 
-`UserCalendarNotifier.new(User.last, Book.last).send(:google_calendar_client).get_calendar('primary')`
+`UserCalendarNotifier.new(User.last, Book.last).send(:google_calendar_client).get_calendar('primary')` - tip: wywołanie naszego klienta api `google_calendar_client` poprzedzamy metodą `send` ponieważ jest ona prywatna.
 <strong>Uwaga</strong> - jeżeli dostajesz błąd unauthorized - upewnij się, że dla danego usera, na którym testujesz w konsoli masz aktywną sesję w przeglądarce (do komunikacji z API Google Calendar wykorzystujemy token, ktory mógł wygasnąć!)
 ```
 Caught error Unauthorized
