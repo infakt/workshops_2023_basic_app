@@ -99,7 +99,7 @@ end
 ```
 
 Jak sprawdzić czy dobrze działa nasz presenter?
-W konsoli zapisz sobie pod zmienną dane z odpowdzi api pogodowego `data = WeatherApiConnector.new.weather_data` oraz wywołanie presentera, np. `presenter = WeatherPresenter.new`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
+W konsoli zapisz sobie pod zmienną dane z odpowdzi api pogodowego `data = WeatherApiConnector.new.weather_data` oraz wywołanie presentera, np. `presenter = WeatherPresenter.new(data)`, a następnie sprawdź co zwracają poszczególne metody presentera, np. `presenter.encourage_text`. 
 Jeśli jest ok, możemy przejśc dalej, jeśli coś jeszcze nie działa jak należy poprawiamy.
 
 10. Aby metody z naszego presentera były dostępne w całej aplikacji dodajemy odpowiednie metody w `app/helpers/application_helper.rb`, dzięki temu będą one dostępne globalnie:
