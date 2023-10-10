@@ -5,7 +5,11 @@ ruby '3.2.1'
 
 gem 'bootsnap', require: false
 gem 'bootstrap'
+gem 'a9n'
 gem 'devise'
+gem 'google-api-client', require: 'google/apis/calendar_v3'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'puma', '~> 6.4'
