@@ -8,7 +8,7 @@ Wykonujemy w terminalu polecenie `brew install redis`. Po poprawnej instalacji w
 
 ## Linux
 
-W zależności od używanej dystrybucji instalujemy redisa za pomocą naszego managera paczek (być może jest już zainstalowany - możesz sprawdzić jego wersję poleceniem `redis-server --version` - minimalna wersja potrzebna do uruchomienia Sidekiq to 6.2). Po poprawnej instalacji wywołujemy `redis-server`. Jeżeli widzisz w terminalu logo Redisa (pudełko 🙂) i komunikat `Ready to accept connections` - jest ok. Zostawiamy uruchomiony serwer - to wszystko. :)
+W zależności od używanej dystrybucji instalujemy Redisa za pomocą naszego managera paczek (być może jest już zainstalowany - możesz sprawdzić jego wersję poleceniem `redis-server --version` - minimalna wersja potrzebna do uruchomienia Sidekiq to 6.2). Po poprawnej instalacji wywołujemy `redis-server`. Jeżeli widzisz w terminalu logo Redisa (pudełko 🙂) i komunikat `Ready to accept connections` - jest ok. Zostawiamy uruchomiony serwer - to wszystko. :)
 
 ## Ubuntu
 

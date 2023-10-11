@@ -45,7 +45,7 @@ Jeśli zwrócona w konsoli tablica zawiera przynajmniej jeden obiekt klasy `Side
 Nawiązując do prezentacji - kolejkowanie zadań ma nam upraszczać życie i odciążać aplikację - wykonywać zadania nie wymagające priorytetu w adekwatnej chwili i ponawiać je w razie niedostępności partnera, problemów z wysyłką maila lub innych możliwych błędów.
 
 Kolejkowanie na dłuuugo do przodu nie jest dobrym pomysłem - chociażby dlatego, że z kolejką też może się "coś" stać.
-Lepszym rozwiązaniem jest cykliczne wykonywanie zadań, których wywołania możemy się spodziewać. To znaczy - nie oczekujemy, że wywołają się w związku z inną akcją. Wiemy, że i tak powinny się wykonać, że, tak jak w naszym wypadku, codziennie komuś będzie kończył się termin wypożyczenia. Dlatego niewarto "zapychać" kolejki - lepiej regularnie weryfikować wypożyczenia i wtedy kolejkować powiadomienia (tutaj wiadomości email) krótkoterminowo.
+Lepszym rozwiązaniem jest cykliczne wykonywanie zadań, których wywołania możemy się spodziewać. To znaczy - nie oczekujemy, że wywołają się w związku z inną akcją. Wiemy, że i tak powinny się wykonać, że, tak jak w naszym wypadku, codziennie komuś będzie kończył się termin wypożyczenia. Dlatego nie warto "zapychać" kolejki - lepiej regularnie weryfikować wypożyczenia i wtedy kolejkować powiadomienia (tutaj wiadomości email) krótkoterminowo.
 
 ## Do dzieła!
 
