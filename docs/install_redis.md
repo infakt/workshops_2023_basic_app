@@ -4,7 +4,7 @@ Do uruchomienia Sidekiqa, którego będziemy dzisiaj używać, potrzebujemy Redi
 
 ## MacOS
 
-Wykonujemy w terminalu polecenie `brew install redis`. Po poprawnej instalacji wywołujemy `redis-server`. Jeżeli widzisz w terminalu logo Redisa (pudełko 🙂) i komunikat `Ready to accept connections` - jest ok. Zostawiamy uruchomiony serwer - to wszystko. :)
+Wykonujemy w terminalu polecenie `brew install redis`. Po poprawnej instalacji wywołujemy `redis-server`(ew. `brew services start redis`). Jeżeli widzisz w terminalu logo Redisa (pudełko 🙂) i komunikat `Ready to accept connections` - jest ok. Zostawiamy uruchomiony serwer - to wszystko. :)
 
 ## Linux
 
