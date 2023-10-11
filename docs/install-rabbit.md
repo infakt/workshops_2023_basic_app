@@ -8,7 +8,7 @@
 
 
 2. Aby uruchomić system kolejkowy wpisujemy `brew services start rabbitmq`, to pozwoli nam uruchomić rabbita lokalnie w tle.
-3. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;).
+3. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;) (guest/guest).
 
 ![Alt text](image-1.png)
 
@@ -29,6 +29,7 @@ Jeśli mamy już zainstalowanego Erlanga to uruchamiamy go dwuklikiem, powinno o
   Eshell V5.0.1  (abort with ^G)
   1>
 ```
+(można też wpisać w terminalu komendę erl lub werl)
 
 W przypadku braku Erlanga, możemy go pobrać z linku:
 
@@ -50,11 +51,11 @@ Restartujemy serwer w konsoli: `net stop RabbitMQ && net start RabbitMQ` UWAGA! 
 
 Serwer możemy też uruchomić wyszukując polecenie `RabbitMQ Command Prompt`.
 
-4. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;).
+4. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;) (guest/guest).
 
 
 ## Ubuntu/Debian
 
 1. https://computingforgeeks.com/how-to-install-latest-rabbitmq-server-on-ubuntu-linux/ -> najpierw instalacje erlanga a później rabbita.
 
-2. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;).
+2. Jeśli wszystko pójdzie ok, to pod adresem `http://localhost:15672` powinniśmy zobaczyć panel, do którego logujemy się jako gość, gość ;) (guest/guest).
