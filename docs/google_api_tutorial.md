@@ -274,7 +274,7 @@ end
 
 ```ruby
 def insert_event
-  get_google_calendar_client.insert_event(CALENDAR_ID, event_data)
+  google_calendar_client.insert_event(CALENDAR_ID, event_data)
 end
 ```
 
