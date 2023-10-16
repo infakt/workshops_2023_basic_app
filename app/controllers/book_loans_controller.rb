@@ -12,6 +12,7 @@ class BookLoansController < ApplicationController
         format.json { render json: @book_loan.errors, status: :unprocessable_entity }
       end
     end
+    notice_calendar
   end
 
   def cancel
@@ -21,6 +22,10 @@ class BookLoansController < ApplicationController
         format.json { render :show, status: :ok, location: book }
       end
     end
+  end
+
+  def notice_calendar
+    UserCalendarNotifier.new(current_user, book).insert_event
   end
 
   private
