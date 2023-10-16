@@ -1,0 +1,2 @@
+defaults:
+  weather_api_key: '__your_api_key__'

@@ -12,6 +12,8 @@ module Workshops2023BasicApp
     config.load_defaults 7.0
 
     # Configuration for the application, engines, and railties goes here.
+    A9n.root = File.expand_path('..', __dir__)
+    A9n.load
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
