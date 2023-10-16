@@ -31,9 +31,9 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
  - temperatura
  - tekstowy opis
  - ikonka pokazująca graficzną reprezentację opisu
-3. Najpierw zapiszmy nasz klucz API w bezpiecznym miejscu, do którego będziemy się odnosić w kodzie. Wykorzystamy do tego gem 'A9n':
+3. Najpierw zapiszmy nasz klucz API w bezpiecznym miejscu, do którego będziemy się odnosić w kodzie. Wykorzystamy do tego gem 'A9n' https://github.com/knapo/a9n:
  - dodajemy gem do Gemfile; gem 'a9n' i uruchamiamy `bundle`
- - w pliku `config/application.rb` dodajemy odpowiedni zapis w kontekscie A9n
+ - w pliku `config/application.rb` dodajemy odpowiedni zapis w kontekscie A9n (wszystkie konfiguracje wpinamy “wewnątrz” klasy `class Application` )
     ```
     A9n.root = File.expand_path('..', __dir__)
     A9n.load
@@ -49,7 +49,8 @@ Chcemy połączyć naszą aplikację w Ruby on Rails z API pogodowym dostarczany
     /config/configuration.yml
     ```
 
-4. Tworzymy serwis, który bedzie nam pobierał komplet bieżących danych pogodowych `app/services/weather_api_connector.rb`.
+Check: wejdz do konsoli i sprawdz czy dziala ci komenda `A9n.weather_api_key` - jezeli nie, zawołaj mentora.
+4. Tworzymy serwis, który bedzie nam pobierał komplet bieżących danych pogodowych `app/services/weather_api_connector.rb`. Nie mamy jeszcze katalogu `services` więc najpierw go dodajmy a potem w nim tworzymy plik `weather_api_connector.rb`.
 5. Tu przykładowy artykuł listujący metody tworzenia requestów do API https://www.twilio.com/blog/5-ways-make-http-requests-ruby, skorzystamy z tej pierwszej, dlatego nalezy pamiętać o dodaniu w serwisie tworzącym klienta api zapisu `require 'net/http'`.
 6. Wartości przekazujące klucz API oraz lokalizację zapisujemy do stałych, jeśli chodzi o lokalizację to dla uproszczenia przyjmujemy, że pobieramy dane dla Krakowa:
 ```
@@ -68,8 +69,8 @@ def weather_data
 end
 ```
 Jak sprawdzić czy do tego miejsca działamy prawidłowo?
-Spróbuj w konsoli wywołać metodę `weather_data` z naszego serwisu, czyli `WeatherApiConnector.new.weather_data`, powinna nam ona zwrócić komplet danych z api pogodowego. 
-Przy okazji pomoże nam to przygotować się do "wyłuskania" potrzebnych danych w kolejnym kroku.
+Spróbuj w konsoli wywołać metodę `weather_data` z naszego serwisu, czyli `WeatherApiConnector.new.weather_data`, powinna nam ona zwrócić komplet danych z api pogodowego. Pamiętaj, ze moze będzie zapewne potrzebne przeładowanie konsoli (sam `reload!` nie wystarczy).
+Przy okazji pomoże nam to przygotować się do "wyłuskania" potrzebnych danych w kolejnym kroku. Gdybyśmy chcieli dostać się na przykład do wilgotności, to patrząc na tą zwrotkę - będzie to `data['current']['humidity']`.
 
 8. Aby ładnie zaprezentować nasze dane pogodowe i tylko te, które sobie zaplanowaliśmy korzystamy z nowej warstwy abstrakcji i tworzymy presenter `app/presenters/weather_presenter.rb`.
 9. W presenterze, bazując na danych z serwisu zwracającego odpowiedź z API pogodowego, tworzymy metody:
