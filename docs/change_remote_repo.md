@@ -57,7 +57,7 @@ origin	git@github.com:Dellilah/workshops_2023_basic_app.git (push)
 ## Troubleshooting
 
 ### Problem z branchem MAIN
-Ze względu na to, że lokalnie rozwijałeś/łaś już apkę z brancha main z dnia 10.05, a między czasie trochę go wzbogaciliśmy o instrukcje... może się to nieco rozjechać.
+Ze względu na to, że lokalnie rozwijałeś/łaś już apkę z brancha main z pierwszego dnia warsztatów, a między czasie mogły pojawić się na nim jakieś instrukcje... może się to nieco rozjechać.
 
 **Jak sobie poradzić?**
 1. Zróbmy backup Twojego obecnego maina
