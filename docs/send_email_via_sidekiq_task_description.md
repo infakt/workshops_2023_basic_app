@@ -30,7 +30,7 @@ Dodaj do aplikacji gem [Sidekiq](https://github.com/sidekiq/sidekiq), np. wywoł
 
 Zobacz czy Sidekiq "wstaje" - uruchom go poleceniem `sidekiq`(lub `bundle exec sidekiq`) w osobnym terminalu. Pamiętaj o uruchomionym Redisie!
 
-Stwórz katalog `app/jobs`, a w nim klasę z przyrostkiem `Job` na końcu. Zgodnie z konwencją, powinna nazywać się podobnie jak Twoja metoda mailera oraz plik z treścią wiadomości email, np. `LoanCreatedJob`(`loan_created_job.rb`). Dodaj do niej `include` jak poniżej:
+W katalogu `app/jobs` stwórz klasę z końcówką `Job`. Zgodnie z konwencją, powinna nazywać się podobnie jak Twoja metoda mailera oraz plik z treścią wiadomości email, np. `LoanCreatedJob`(`loan_created_job.rb`). Dodaj do niej `include` jak poniżej:
 ```
 class SomeJob
   include Sidekiq::Job
