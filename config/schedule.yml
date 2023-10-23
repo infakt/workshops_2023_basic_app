@@ -1,0 +1,3 @@
+due_date_notification:
+  cron: '0 8 * * *' # codziennie o 8 rano sprawdzamy, komu jutro kończy się termin i wysyłamy maila wszystkim znalezionym
+  class: 'DueDateNotificationCronJob'
