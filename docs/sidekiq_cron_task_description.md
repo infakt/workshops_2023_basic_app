@@ -49,7 +49,8 @@ Lepszym rozwiązaniem jest cykliczne wykonywanie zadań, których wywołania mo�
 
 ## Do dzieła!
 
-Zacznijmy od zmodyfikowania naszego `Job`a. Od teraz nie będzie on służył do wysyłki powiadomienia dla konkretnego obiektu wypożyczenia. Chcemy, żeby metoda `perform` iterowała (`BookLoan.where(...).each`) po wszystkich aktywnych wypożyczeniach (`status: 'checked_out'`), które kończą się jutro (`due_date: Date.tomorrow`).
+Zacznijmy od zmodyfikowania naszego `Job`a. Od teraz nie będzie on służył do wysyłki powiadomienia dla konkretnego obiektu wypożyczenia. Chcemy, żeby metoda `perform` iterowała (`BookLoan.where(...).each`) po wszystkich aktywnych wypożyczeniach (`status: 'checked_out'`), które kończą się jutro (`due_date: Date.tomorrow`). Możesz też użyć `scope`, który udostępnia nam pole typu `enum` na modelu `BookLoan`:
+`BookLoan.checked_out.where(...).each`. W ten sposób w `where` pytamy tylko o jedną kolumnę z bazy.
 
 Na znalezionym zbiorze użyj pętli `each`, a w niej wywołaj metodę mailera jako argument podając aktualny element znalezionego zbioru.
 
