@@ -61,9 +61,7 @@ Na tym etapie możemy sprawdzić czy poprawnie łączymy się z rabitem. W konso
 ```
 W konsoli powinniśmy dostać true, a w panelu na http://localhost:15672/#/exchanges powinen pojawić się `testowy_exchange`.
 
-![Alt text](image.png)
-<img src="../app/assets/images/docs/loan_click.png" />
-
+<img src="../app/assets/images/docs/rabbitmq/test-exchange.png" />
 
 5. A teraz KONKRETY! 
 
@@ -91,22 +89,23 @@ Chcielibyśmy logować informacje dotyczące wypożyczenia książki. W tym celu
 Aby sprawdzić, czy poprawnie działa nam cały kod dotychczasowy kod.
 Wypożyczamy książke, wchodzimy na http://localhost:15672/#/exchanges, tam powinen być stworzony exchange o nazwie, którą zdefiniowaliśmy w LoanBookPublisherze
 
-![Alt text](image-1.png)
+<img src="../app/assets/images/docs/rabbitmq/basic-app-exchange.png" />
 
 Jeśli chcemy mieć pewność, że wiadomość została faktycznie opublikowana na danym exchangeu, to możemy kliknąć jego nazwę wtedy zobaczymy wykres aktywności.
 
-![Alt text](image-2.png)
+<img src="../app/assets/images/docs/rabbitmq/peak-exchange.png" />
 
 ## Etap II - Side APP
 ## Setup Side APP
 Aby przyśpieszyć trochę pracę przygotowałem Aplikację, której zadaniem będzie odbieranie logów.
-1. Forkujemy repozytorium z `https://github.com/infakt/workshops_2023_side_app`
+1. Forkujemy repozytorium z https://github.com/infakt/workshops_2023_side_app
 2. Instalujemy gemy: `bundle install`
 3. Setupujemy bazę: `rake db:setup`
 4. Uruchamiamy server: `rails server`
 Aplikacja powinna uruchomić się na porcie 3001. `http://localhost:3001/`
 Jeśli chcemy potwierdzić czy logi wyświetlają się prawidłowo, tworzymy w konosli railsowej obiekt:
 `Log.create(user_id: 1, data: {ff: 'aaa'})`, który po teście możemy usunąć.
+
 ## Setup gemów Sneakers i Bunny
 1. Dodajemy gem Sneakers odpowiadający za tworzenie workerów konsumujących wiadomości. Do Gemfile dodajemy `gem 'sneakers'` oraz `gem 'bunny'` - odpowiedzialny za połączenie z RabbitMQ.
 2. Instalujemy gemy: `bundle install`.
@@ -154,7 +153,7 @@ Jeśli sneakers uruchomi się poprawnie to wchodząc na pannel RabbitMQ sprawdzi
 http://localhost:15672/#/exchanges -> wybieramy z listy nasz exchange i sprawdzamy w zakładkce `Bindings` czy jest tam nasza kolejka.
 Jeśli nie to wołamy o pomoc! :D
 
-![Alt text](image-3.png)
+<img src="../app/assets/images/docs/rabbitmq/queue.png" />
 
 ## Zapis logów w bazie i debugowanie
 1. Ostatnim krokiem jest zapisanie naszego logu w bazie danych side_app.
@@ -176,12 +175,12 @@ Po każdej zmianie kodu w workerze, należy zrestartować serwer.
 
 Przechodzimy do Bilbioteki i wypożyczamy książkę. Z pozoru nic się nie wydarzyło, ale serwer side_app powinen zatrzymać się na wykonaniu metody `work`. 
 
-![Alt text](image-4.png)
+<img src="../app/assets/images/docs/rabbitmq/pry.png" />
 
 Wpisując `data` (opieram się na nazwach z przykłądu wyżej) powinniśmy dostać nasz message.
 Jest on w formacje JSON. Aby zapisać dane potrzebujemy go sparsować do Hasha. Możemy przetestować parsowanie w naszej 'sesji' debuggera/pry'a.
 
-![Alt text](image-5.png)
+<img src="../app/assets/images/docs/rabbitmq/parsed-data.png" />
 
 Mamy już wszystkie potrzebne dane. Aby serwer zaczął działać dalej musimy zakończyć pracę debbugera. Wpisujemy 'next' lub kombinacje klawiszy CTRL+D.
 Wracamy do naszej metody. Usuwamy `pry`, a do zmiennej przypisujemy sparsowany JSON.
@@ -189,7 +188,7 @@ Wracamy do naszej metody. Usuwamy `pry`, a do zmiennej przypisujemy sparsowany J
 W side_app mamy już wygenerowany Log -> `app/models/log.rb`. Wymaga on dwóch pól `user_id` i `data`.
 Docelowo chcemy, żeby nasz worker zapisał w bazie danych Log z danymi, które otrzymał. Możemy wykorzystać do tego zapis, którego użyliśmy w Setupie side_app, przekazując odpowiednie dane. Całość na koniec powinna wyglądać tak:
 
-![Alt text](image-6.png)
+<img src="../app/assets/images/docs/rabbitmq/final.png" />
 
 
   ## Zadania dodatkowe
