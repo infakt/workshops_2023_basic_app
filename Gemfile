@@ -18,6 +18,7 @@ gem 'stimulus-rails'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'a9n'
+gem 'bunny'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -38,6 +39,7 @@ end
 
 group :development do
   gem 'letter_opener'
+  gem 'letter_opener_web', '~> 2.0'
   gem 'web-console'
 end
 
