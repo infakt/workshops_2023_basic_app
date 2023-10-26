@@ -27,6 +27,7 @@ Jeżeli korzystamy z innej biblioteki testowej (innej niz rspec) dodany pakiet b
 
 ## Integracja z przeglądarką:
 Bez dodania poniższych rzeczy testy capybary będą działały, jednak nie będziemy mieli możliwości podglądu co aktualnie się wykonuje.
+Jeżeli nie masz chrome na swoim komputerze, to go pobierz, będzie znacznie szybciej. :D
 
 1. Tworzymy plik spec/support/chromedriver.rb
 
@@ -102,7 +103,7 @@ describe 'Log in', type: :feature do
 end
 ```
 
-3. Z racji tego, ze akcje wykonujemy w bloku it, aby uspokoić rubocopa dodajemy do pliku ```.rubocop.yml```
+3. Z racji tego, że akcje wykonujemy w bloku it, aby uspokoić rubocopa dodajemy do pliku ```.rubocop.yml```
 ```yml
 RSpec/ExampleLength:
   Exclude:
@@ -114,10 +115,10 @@ RSpec/AnyInstance:
 
 4. Test odpalamy standardową komendą testową: ```rspec spec/features/log_in_spec.rb```
 
-## Piewsze wyzwania
+## Pierwsze wyzwania
 
-W przypadku osób, które zrealiwoały zadanie związane z danymi pogodowymi mogą natrafić na pewne wyzwanie. Test moze nie przejść.
-Aby temu zapobiec potrzebujemy zamockować dane zwracające przez WeatherApi.
+W przypadku osób, które zrealizowały zadanie związane z danymi pogodowymi mogą natrafić na pewne wyzwanie. Test może nie przejść.
+Aby temu zapobiec potrzebujemy zamockować dane zwracające przez WeatherApi. Nie jest dobrą praktyką uderzanie do naszego partnera za każdym razem gdy uruchamiamy testy
 
 ```ruby
 (...)
@@ -144,7 +145,7 @@ let(:weather_data) do
 ```
 
 ## Zadanie!
-Dopisz test poprawnego logowania
+1. W tym samym dopisz test poprawnego logowania
 ```ruby
 context 'when user is registered' do
     ## Miejsce na Twój kodzik
@@ -156,3 +157,10 @@ context 'when user is registered' do
     end
 end
 ```
+
+2. Dopisz test wypożyczenia książki
+w katalogu ```spes/features``` utrórz plik ```loan_book_spec.rb```
+test możemy zacząć od zalogowania do wypożyczenia książki.
+Pamiętaj o utworzeniu obiektu książki w bazie danych.
+Korzystaj w opisanych akcji.
+Powodzenia!
