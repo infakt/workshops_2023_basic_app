@@ -49,8 +49,6 @@ end
 
 ```
 
-[integracja z firefoxem](https://www.lambdatest.com/automation-testing-advisor/ruby/methods/capybara_ruby.Capybara.SpecHelper.firefox)
-
 2. Dodajemy plik do naszego helpera:
 
 ```require 'support/chromedriver'```
@@ -108,7 +106,7 @@ RSpec/AnyInstance:
 ## Pierwsze wyzwania
 
 W przypadku osób, które zrealizowały zadanie związane z danymi pogodowymi mogą natrafić na pewne wyzwanie. Test może nie przejść.
-Aby temu zapobiec potrzebujemy zamockować dane zwracające przez WeatherApi. Nie jest dobrą praktyką uderzanie do naszego partnera za każdym razem gdy uruchamiamy testy
+Aby temu zapobiec potrzebujemy zamockować dane zwracające przez WeatherApi. Nie jest dobrą praktyką wysyłanie requestów do naszego partnera przy każdym wykonywaniu testów.
 
 ```ruby
 (...)
@@ -150,7 +148,8 @@ end
 
 2. Dopisz test wypożyczenia książki
 w katalogu ```spes/features``` utrórz plik ```loan_book_spec.rb```
-test możemy zacząć od zalogowania do wypożyczenia książki.
+test możemy zacząć od zalogowania do wypożyczenia książki (end to end) lub zacząć test juz jako zalogowany user.
+Jak to zrobić znajdziemy tutaj [stubowanie sesji usera](https://sajadtorkamani.com/login-devise-user-in-capybara-tests/)
 Pamiętaj o utworzeniu obiektu książki w bazie danych.
 Korzystaj w opisanych akcji.
 Powodzenia!
