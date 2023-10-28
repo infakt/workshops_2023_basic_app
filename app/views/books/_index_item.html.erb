@@ -1,0 +1,13 @@
+<div class="col-md-6" id="<%= dom_id book %>">
+  <div class="book">
+    <h2 class="book-title"><%= book.title %></h2>
+    <div class="book-details">by <%= book.author.full_name %></div>
+    <div class="book-details">Published in <%= book.year %></div>
+    <div class="book-category">Category: <%= book.category.name %></div>
+    <div class="book-btns">
+      <%= link_to 'Details', book_path(book), class: "btn book-btn btn-details" %>
+      <%= reserve_book_button(book, css_class: 'book-btn btn-reserve') %>
+      <%= loan_book_button(book, css_class: 'book-btn btn-reserve') %>
+    </div>
+  </div>
+</div>
