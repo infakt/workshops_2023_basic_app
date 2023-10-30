@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.1'
 
 gem 'hotwire-rails'
+gem 'kaminari'
 gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'devise'
