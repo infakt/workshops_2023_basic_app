@@ -28,3 +28,10 @@ Metrics/AbcSize:
 
 Rails/I18nLocaleTexts:
   Enabled: false
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/features/**/*'
+
+RSpec/AnyInstance:
+  Enabled: false
