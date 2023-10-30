@@ -1,6 +1,8 @@
 class Book < ApplicationRecord
   validates :title, presence: true
 
+  after_destroy_commit -> { broadcast_remove_to :books }
+
   belongs_to :author
   belongs_to :category
   belongs_to :publisher
