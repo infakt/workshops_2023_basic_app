@@ -1,8 +1,20 @@
 <div class="container">
   <h1 class="text-center mb-5">Books</h1>
-  <div class="row">
-    <% @books.each do |book| %>
-      <%= render 'index_item', book: book %>
+  <div class='text-center mb-5' data-controller='search'>
+    <%= text_field_tag :query,'', placeholder: 'Search by title', data: { action: 'input->search#search', search_target: 'params' } %>
+  </div>
+  <div class="row" id="search_results"></div>
+  <div id="infinity_scroll">
+    <%= turbo_frame_tag "paginate_page_#{@books.current_page}" do %>
+      <div class="row">
+        <%= turbo_stream_from :books %>
+        <%= render partial: 'index_item', collection: @books, as: :book %>
+      </div>
+      <% if @books.next_page %>
+        <%= turbo_frame_tag "paginate_page_#{@books.next_page}", src: books_path(page: @books.next_page), loading: 'lazy' do %>
+          Loading...
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

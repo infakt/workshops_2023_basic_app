@@ -5,7 +5,7 @@
     <div class="book-details">Published in <%= book.year %></div>
     <div class="book-category">Category: <%= book.category.name %></div>
     <div class="book-btns">
-      <%= link_to 'Details', book_path(book), class: "btn book-btn btn-details" %>
+      <%= link_to 'Details', book_path(book), class: "btn book-btn btn-details", data: { turbo_frame: '_top' } %>
       <%= reserve_book_button(book, css_class: 'book-btn btn-reserve') %>
       <%= loan_book_button(book, css_class: 'book-btn btn-reserve') %>
     </div>

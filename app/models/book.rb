@@ -1,4 +1,6 @@
 class Book < ApplicationRecord
+  after_destroy_commit -> { broadcast_remove_to :books }
+
   validates :title, presence: true
 
   belongs_to :author
