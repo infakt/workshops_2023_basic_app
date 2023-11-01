@@ -1,4 +1,12 @@
 module ApplicationHelper
+  def weather_data
+    @weather_data ||= WeatherApiConnector.new.weather_data
+  end
+
+  def weather_presenter
+    @weather_presenter ||= WeatherPresenter.new(weather_data)
+  end
+
   def reserve_book_button(book, css_class: '')
     return unless book.reservation_available_for?(current_user)
 
@@ -19,5 +27,13 @@ module ApplicationHelper
       method: :post,
       class: "btn #{css_class}"
     )
+  end
+
+  def weather_data
+    @weather_data ||= WeatherApiConnector.new.weather_data
+  end
+
+  def weather_presenter
+    @weather_presenter ||= WeatherPresenter.new(weather_data)
   end
 end
