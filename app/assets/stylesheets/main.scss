@@ -1,3 +1,10 @@
+.inline-action {
+  display: none;
+}
+.inline-show .inline-action {
+  display: initial;
+}
+
 .container {
   width: 100%;
   margin: 0 auto;

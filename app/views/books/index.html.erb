@@ -1,20 +1,22 @@
+<%= turbo_stream_from :books %>
+
 <div class="container">
   <h1 class="text-center mb-5">Books</h1>
-  <div class="row">
-    <% @books.each do |book| %>
-      <div class="col-md-6">
-        <div class="book">
-          <h2 class="book-title"><%= book.title %></h2>
-          <div class="book-details">by <%= book.author.full_name %></div>
-          <div class="book-details">Published in <%= book.year %></div>
-          <div class="book-category">Category: <%= book.category.name %></div>
-          <div class="book-btns">
-            <%= link_to 'Details', book_path(book), class: "btn book-btn btn-details" %>
-            <%= reserve_book_button(book, css_class: 'book-btn btn-reserve') %>
-            <%= loan_book_button(book, css_class: 'book-btn btn-reserve') %>
-          </div>
-        </div>
+  <div class='text-center mb-5' data-controller='search'>
+    <%= text_field_tag :query,'', placeholder: 'Search by title', data: { action: 'input->search#connect', search_target: :params } %>
+  </div>
+  <div class="row" id="search_results"></div>
+
+  <div id="infinity_scroll">
+    <%= turbo_frame_tag "paginate_page_#{@books.current_page}" do %>
+      <div class="row">
+        <%= render partial: 'index_item', collection: @books, as: :book %>
       </div>
+      <% if @books.next_page %>
+        <%= turbo_frame_tag "paginate_page_#{@books.next_page}", src: books_path(page: @books.next_page), loading: 'lazy' do %>
+          Loading...
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -21,10 +21,15 @@
         <div class="book-info-label">Category:</div>
         <div class="book-info-value"><%= @book.category.name %></div>
       </div>
-      <div class="book-info mb-4">
-        <div class="book-info-label">Pages:</div>
-        <div class="book-info-value"><%= @book.page_count %></div>
-      </div>
+      <%= form_with(model: @book, data: { turbo_frame: dom_id(@book, 'page_count') }) do |form| %>
+        <%= turbo_frame_tag dom_id(@book, 'page_count'), class: 'inline-show' do %>
+          <div class="book-info mb-4">
+            <div class="book-info-label">Pages:</div>
+            <div class="book-info-value"><%= @book.page_count %></div>
+            <%= link_to 'edit', edit_book_path(@book)%>
+          </div>
+        <% end %>
+      <% end %>
       <div class="book-info mb-4">
         <div class="book-info-label">ISBN:</div>
         <div class="book-info-value"><%= @book.isbn %></div>

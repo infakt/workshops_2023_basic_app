@@ -15,7 +15,7 @@ user2.update(password: '123User!', password_confirmation: '123User!')
 10.times { Publisher.create(name: Faker::Book.publisher) }
 10.times { Author.create(name: Faker::Book.author.split(' ').first, surname: Faker::Book.author.split(' ').last) }
 
-10.times do
+25.times do
   Book.create(
     title: Faker::Book.title,
     isbn: Faker::Code.isbn,
